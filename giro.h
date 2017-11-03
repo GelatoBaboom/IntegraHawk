@@ -19,7 +19,8 @@ class Giro
 	Giro();
 	void init();
 	String GetAngles();
-	const int MPU_addr = 0x68;
+private:
+	int MPU_addr = 0x68;
 	double AcX, AcY, AcZ, Tmp, GyX, GyY, GyZ;
 	uint32_t timer;
 	double compAngleX, compAngleY;
