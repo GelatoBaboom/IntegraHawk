@@ -1,3 +1,4 @@
+#include "Angle.h"
 #include "Antenna.h"
 #include "giro.h"
 #include "Antenna.h"
@@ -12,7 +13,7 @@ void setup() {
 
 void loop() {
 	
-	Serial.println(g.GetAngles()); 
-	a.send(g.GetAngles());
+	Serial.println(g.GetAngles().toString()); 
+	a.receive();
 }
 

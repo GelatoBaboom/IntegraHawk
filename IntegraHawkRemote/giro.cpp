@@ -9,6 +9,7 @@
 */
 
 #include "giro.h"
+#include "Angle.h"
 #include<Wire.h>
 Giro::Giro()
 {
@@ -58,7 +59,7 @@ void Giro::init()
 	timer = micros();
 
 }
-String Giro::GetAngles()
+Angle Giro::GetAngles()
 {
 	Wire.beginTransmission(MPU_addr);
 	Wire.write(0x3B);  // starting with register 0x3B (ACCEL_XOUT_H)
@@ -93,7 +94,8 @@ String Giro::GetAngles()
 	//The filter then adds a small correcting factor from the accelerometer ("roll" or "pitch"), so the gyroscope knows which way is down. 
 	compAngleX = 0.99 * (compAngleX + gyroXrate * dt) + 0.01 * roll; // Calculate the angle using a Complimentary filter
 	compAngleY = 0.99 * (compAngleY + gyroYrate * dt) + 0.01 * pitch;
-	return String(compAngleX) + " - " + String(compAngleY);
+	//return String(compAngleX) + " - " + String(compAngleY);
+	return Angle(compAngleX,compAngleY);
 }
 
 

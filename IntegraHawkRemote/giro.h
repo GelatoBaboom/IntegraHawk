@@ -18,12 +18,12 @@ class Giro
  public:
 	Giro();
 	void init();
-	String GetAngles();
+	Angle GetAngles();
 private:
 	int MPU_addr = 0x68;
 	double AcX, AcY, AcZ, Tmp, GyX, GyY, GyZ;
 	uint32_t timer;
-	double compAngleX, compAngleY;
+	int compAngleX, compAngleY;
 };
 
 /*extern GiroClass Giro;*/

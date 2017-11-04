@@ -14,6 +14,17 @@ void Antenna::send(String data)
 {
 	antSerial.println(data);
 }
+String Antenna::receive()
+{
+	String data = "";
+	while (antSerial.available()) {
+		char c = antSerial.read();
+		data += c;
+	}
+	return data;
+}
+
+
 
 
 
