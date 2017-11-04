@@ -5,14 +5,13 @@
 Giro g;
 Antenna a;
 void setup() {
-	g.init();
-	a.init();
 	//Serial.begin(9600);
+	g.init();
+	a.begin(9600);
 
 }
 
 void loop() {
-	
 	//Serial.println(); 
 	a.send(g.GetAngles().toString());
 }

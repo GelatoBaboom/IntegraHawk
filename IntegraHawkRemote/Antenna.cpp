@@ -5,10 +5,11 @@
 #include "Antenna.h"
 #include <SoftwareSerial.h>
 SoftwareSerial antSerial(2, 3);
-void Antenna::init()
+void Antenna::begin(int baudrate)
 {
-	antSerial.begin(9600);
-
+	//aca segun los baudrates deberia reconfigurar la antena
+	//para que tenga logica que lo pase como parametro
+	antSerial.begin(baudrate);
 }
 void Antenna::send(String data)
 {

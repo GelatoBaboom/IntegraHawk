@@ -15,15 +15,11 @@ protected:
 
 
 public:
-	void init();
+	void begin(int baudrate);
 	void send(String data);
 	String  receive();
 private:
-
 };
-
-
-/*extern AntennaClass Antenna;*/
 
 #endif
 
