@@ -7,13 +7,13 @@ Antenna a;
 void setup() {
 	g.init();
 	a.init();
-	Serial.begin(9600);
+	//Serial.begin(9600);
 
 }
 
 void loop() {
 	
-	Serial.println(g.GetAngles().toString()); 
-	a.receive();
+	//Serial.println(); 
+	a.send(g.GetAngles().toString());
 }
 

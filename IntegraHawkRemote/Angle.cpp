@@ -3,7 +3,7 @@
 // 
 
 #include "Angle.h"
-Angle::Angle(int x, int y)
+Angle::Angle(double x, double y)
 {
 	AngleX = x;
 	AngleY = y;

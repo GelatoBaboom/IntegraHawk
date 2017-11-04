@@ -13,9 +13,9 @@ class Angle
 protected:
 
 public:
-	Angle(int x, int y);
-	int AngleX;
-	int AngleY;
+	Angle(double x, double y);
+	double AngleX;
+	double AngleY;
 	String toString();
 private:
 
