@@ -14,6 +14,7 @@ protected:
 
 public:
 	Angle(double x, double y);
+	Angle(String xy);
 	double AngleX;
 	double AngleY;
 	String toString();
