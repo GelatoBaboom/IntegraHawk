@@ -16,19 +16,15 @@ void setup() {
 }
 
 void loop() {
-	//Serial.println();
 	Angle aReq(0, 0);
-
-	//Angle aCurr(aCurrO.AngleX, aCurrO.AngleY);
 	Angle ang = g.GetAngles();
-	if (ang.HasAngle == true) {
-		String vals = ang.toString();
-		ap.Control(aReq, ang);
-		//Serial.println("Valores: " + vals);
-	}
-	//Serial.println("Servo p: " + ap.Control(aReq, aCurr));
-	//a.send(g.GetAngles().toString());
-
+	//Angle aCurr(aCurrO.AngleX, aCurrO.AngleY);
+	//quizas para despues tenga que ser asi
+	//el while junto con el que pide a la antena si hay act de angulo
+	//y si no hay nada desde la antena despues de unos cuantos bucles le dice al autopilot
+	//que aterrice
+	ang = g.GetAnglesSecure();
+	ap.Control(aReq, ang);
 
 }
 
