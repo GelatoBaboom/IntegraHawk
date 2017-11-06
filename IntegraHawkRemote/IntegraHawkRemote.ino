@@ -6,6 +6,9 @@
 Giro g;
 Antenna a;
 Autopilot ap;
+Angle aCurse(0, 0);
+uint32_t timer;
+bool noPilot = false;
 void setup() {
 	Serial.begin(115200);
 	Serial.println("Inicializacion");
@@ -16,19 +19,37 @@ void setup() {
 }
 
 void loop() {
-	//Serial.println();
-	Angle aReq(0, 0);
-
-	//Angle aCurr(aCurrO.AngleX, aCurrO.AngleY);
-	Angle ang = g.GetAngles();
-	if (ang.HasAngle == true) {
-		String vals = ang.toString();
-		ap.Control(aReq, ang);
-		//Serial.println("Valores: " + vals);
+	String data = a.receive();
+	Angle aReq(data);
+	if (aReq.HasAngle == true) {
+		aCurse = aReq;
+		noPilot = false;
+		timer = micros();
 	}
-	//Serial.println("Servo p: " + ap.Control(aReq, aCurr));
-	//a.send(g.GetAngles().toString());
+	else {
+		if (noPilot == false) {
+			noPilot = true;
+			timer = micros();
+		}
+		if (((micros() - timer) / 1000000) > 3)
+		{
+			Serial.println("No hay piloto.. Dios!!");
+			timer = micros();
+		}
+		else
+		{
+			Serial.println("Tiempo: " + String(timer));
+		}
+	}
 
+	Angle ang = g.GetAngles();
+	//Angle aCurr(aCurrO.AngleX, aCurrO.AngleY);
+	//quizas para despues tenga que ser asi
+	//el while junto con el que pide a la antena si hay act de angulo
+	//y si no hay nada desde la antena despues de unos cuantos bucles le dice al autopilot
+	//que aterrice
+	ang = g.GetAnglesSecure();
+	ap.Control(aReq, ang);
 
 }
 

@@ -38,8 +38,6 @@ void Autopilot::servoMove(int position, char ServoCoor)
 {
 	if (ServoCoor == 'X')
 	{
-		Serial.println("escribiendo");
-		Serial.println(String(position));
 		servoX.write(position);
 	}
 	if (ServoCoor == 'Y')

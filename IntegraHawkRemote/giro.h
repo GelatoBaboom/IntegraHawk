@@ -20,6 +20,7 @@ public:
 	Giro();
 	void init();
 	Angle GetAngles();
+	Angle GetAnglesSecure();
 private:
 	
 };
