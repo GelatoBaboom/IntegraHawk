@@ -21,10 +21,7 @@ public:
 	void init();
 	Angle GetAngles();
 private:
-	int MPU_addr = 0x68;
-	double AcX, AcY, AcZ, Tmp, GyX, GyY, GyZ;
-	uint32_t timer;
-	double compAngleX, compAngleY;
+	
 };
 
 /*extern GiroClass Giro;*/

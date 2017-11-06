@@ -15,9 +15,9 @@ protected:
 
 public:
 	Autopilot();
-	void Control(Angle ReqAngle, Angle CurrentAngle);
+	String Control(Angle ReqAngle, Angle CurrentAngle);
 private:
-	int getServoPosition(double ReqAngle, double CurrentAngle);
+	int getServoPositionX(double ReqAngle, double CurrentAngle);
 	void servoMove(int position, char ServoCoor);
 };
 

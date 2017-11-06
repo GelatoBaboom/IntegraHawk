@@ -14,9 +14,11 @@ protected:
 
 public:
 	Angle(double x, double y);
+  Angle(double x, double y, bool hasAngle);
 	Angle(String xy);
 	double AngleX;
 	double AngleY;
+  bool HasAngle;
 	String toString();
 private:
 
