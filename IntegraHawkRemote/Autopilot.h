@@ -15,6 +15,7 @@ protected:
 
 public:
 	Autopilot();
+	void init();
 	String Control(Angle ReqAngle, Angle CurrentAngle);
 private:
 	int getServoPositionX(double ReqAngle, double CurrentAngle);

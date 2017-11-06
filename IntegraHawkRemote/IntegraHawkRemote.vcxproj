@@ -85,6 +85,11 @@
     <ClInclude Include="Antenna.h" />
     <ClInclude Include="Autopilot.h" />
     <ClInclude Include="giro.h" />
+    <ClInclude Include="helper_3dmath.h" />
+    <ClInclude Include="I2Cdev.h" />
+    <ClInclude Include="MPU6050.h" />
+    <ClInclude Include="MPU6050_6Axis_MotionApps20.h" />
+    <ClInclude Include="MPU6050_9Axis_MotionApps41.h" />
     <ClInclude Include="__vm\.IntegraHawk.vsarduino.h" />
     <ClInclude Include="__vm\.IntegraHawkRemote.vsarduino.h" />
   </ItemGroup>
@@ -93,6 +98,8 @@
     <ClCompile Include="Antenna.cpp" />
     <ClCompile Include="Autopilot.cpp" />
     <ClCompile Include="giro.cpp" />
+    <ClCompile Include="I2Cdev.cpp" />
+    <ClCompile Include="MPU6050.cpp" />
   </ItemGroup>
   <PropertyGroup>
     <DebuggerFlavor>VisualMicroDebugger</DebuggerFlavor>

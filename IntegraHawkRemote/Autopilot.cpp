@@ -8,8 +8,13 @@ Servo servoX;
 Servo servoY;
 Autopilot::Autopilot()
 {
+
+}
+void Autopilot::init()
+{
 	servoX.attach(10);
 	servoY.attach(11);
+	servoX.write(0);
 }
 String Autopilot::Control(Angle ReqAngle, Angle CurrentAngle)
 {
@@ -24,7 +29,7 @@ int Autopilot::getServoPositionX(double ReqAngle, double CurrentAngle)
 {
 	int position, servoAng;
 	position = ReqAngle - CurrentAngle;
-	servoAng = map(position, -60, 60, 0, 180);
+	servoAng = map(position, -45, 45, 0, 180);
 	if (servoAng > 180)servoAng = 180;
 	if (servoAng < 0)servoAng = 0;
 	return servoAng;
@@ -34,6 +39,7 @@ void Autopilot::servoMove(int position, char ServoCoor)
 	if (ServoCoor == 'X')
 	{
 		Serial.println("escribiendo");
+		Serial.println(String(position));
 		servoX.write(position);
 	}
 	if (ServoCoor == 'Y')
