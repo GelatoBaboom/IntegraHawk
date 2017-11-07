@@ -19,7 +19,6 @@ void setup() {
 }
 
 void loop() {
-<<<<<<< HEAD
 	String data = a.receive();
 	Angle aReq(data);
 	if (aReq.HasAngle == true) {
@@ -42,10 +41,6 @@ void loop() {
 			Serial.println("Tiempo: " + String(timer));
 		}
 	}
-
-=======
-	Angle aReq(0, 0);
->>>>>>> bcf231bd23eeca3a953ab0880b47424e599d6de5
 	Angle ang = g.GetAngles();
 	//Angle aCurr(aCurrO.AngleX, aCurrO.AngleY);
 	//quizas para despues tenga que ser asi
