@@ -38,6 +38,7 @@ void Autopilot::servoMove(int position, char ServoCoor)
 {
 	if (ServoCoor == 'X')
 	{
+		//aca hay que hacer un read para ver si actualizar el angulo o no;
 		servoX.write(position);
 	}
 	if (ServoCoor == 'Y')

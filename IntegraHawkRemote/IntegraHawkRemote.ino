@@ -22,12 +22,14 @@ void loop() {
 	String data = a.receive();
 	Angle aReq(data);
 	if (aReq.HasAngle == true) {
-		aCurse = aReq;
-		noPilot = false;
-		timer = micros();
+		Serial.println(aReq.toString());
+		aCurse = Angle(aReq.AngleX, aReq.AngleY);
+		/*	
+			noPilot = false;
+			timer = micros();*/
 	}
 	else {
-		if (noPilot == false) {
+		/*if (noPilot == false) {
 			noPilot = true;
 			timer = micros();
 		}
@@ -39,16 +41,10 @@ void loop() {
 		else
 		{
 			Serial.println("Tiempo: " + String(timer));
-		}
+		}*/
 	}
-	Angle ang = g.GetAngles();
-	//Angle aCurr(aCurrO.AngleX, aCurrO.AngleY);
-	//quizas para despues tenga que ser asi
-	//el while junto con el que pide a la antena si hay act de angulo
-	//y si no hay nada desde la antena despues de unos cuantos bucles le dice al autopilot
-	//que aterrice
-	ang = g.GetAnglesSecure();
-	ap.Control(aReq, ang);
+	Angle ang = g.GetAnglesSecure();
+	ap.Control(aCurse, ang);
 
 }
 

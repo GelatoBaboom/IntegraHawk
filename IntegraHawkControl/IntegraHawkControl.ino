@@ -6,8 +6,10 @@ int valueX;
 int valueY;
 int positionx;
 int positiony;
+Antenna ant;
 void setup() {
 	Serial.begin(9600);
+	ant.begin(9600);
 }
 
 void loop() {
@@ -15,6 +17,8 @@ void loop() {
 	valueY = analogRead(analogPinY);
 	positionx = map(valueX, 0, 1023, -60, 60);
 	positiony = map(valueY, 0, 1023, -60, 60);
-	Serial.println("X:" + String(positionx));
-	Serial.println("Y:" + String(positiony));
+	Angle a((double)positionx, (double)positiony);
+	Serial.println(a.toString());
+	ant.send(a.toString());
+	delay(300);
 }
