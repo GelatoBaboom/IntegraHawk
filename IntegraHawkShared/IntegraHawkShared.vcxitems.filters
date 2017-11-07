@@ -5,8 +5,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)Antenna.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Angle.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)Antenna.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Angle.h" />
   </ItemGroup>
 </Project>

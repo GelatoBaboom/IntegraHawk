@@ -17,9 +17,11 @@
     <Text Include="$(MSBuildThisFileDirectory)readme.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Angle.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Antenna.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Angle.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Antenna.h" />
   </ItemGroup>
 </Project>
