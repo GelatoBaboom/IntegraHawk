@@ -22,7 +22,6 @@ void loop() {
 	String data = a.receive();
 	Angle aReq(data);
 	if (aReq.HasAngle == true) {
-		Serial.println(aReq.toString());
 		aCurse = Angle(aReq.AngleX, aReq.AngleY);
 		/*	
 			noPilot = false;

@@ -16,10 +16,13 @@ protected:
 public:
 	Autopilot();
 	void init();
-	String Control(Angle ReqAngle, Angle CurrentAngle);
+	void Control(Angle ReqAngle, Angle CurrentAngle);
 private:
 	int getServoPositionX(double ReqAngle, double CurrentAngle);
+	int Autopilot::getServoPositionZ(int PositionX);
 	void servoMove(int position, char ServoCoor);
+	int _maxServoX = 180;
+	int _minServoX = 0;
 };
 
 #endif
