@@ -13,12 +13,13 @@ class Angle
 protected:
 
 public:
-	Angle(double x, double y);
-  Angle(double x, double y, bool hasAngle);
+	Angle(double x, double y, double z);
+	Angle(double x, double y, double z, bool hasAngle);
 	Angle(String xy);
 	double AngleX;
 	double AngleY;
-  bool HasAngle;
+	double AngleZ;
+	bool HasAngle;
 	String toString();
 private:
 

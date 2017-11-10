@@ -52,7 +52,7 @@ Angle Giro::GetAnglesSecure()
 }
 Angle Giro::GetAngles()
 {
-	double AngX, AngY;
+	double AngX, AngY, AngZ;
 	bool hasAngle = false;
 	//while (!mpuInterrupt && fifoCount < packetSize) {  }
 
@@ -75,6 +75,8 @@ Angle Giro::GetAngles()
 
 		AngX = ypr[2] * 180.0 / M_PI;
 		AngY = ypr[1] * 180.0 / M_PI;
+		AngZ = ypr[0] * 180.0 / M_PI;
+		AngZ = map(AngZ, -180, 180, 0, 360);
 		hasAngle = true;
 		//COMENTAR_OFICIAL
 		//    Serial.print("ypr\t");
@@ -86,7 +88,7 @@ Angle Giro::GetAngles()
 		//    Serial.println();
 
 	}
-	return Angle(AngX, AngY, hasAngle);
+	return Angle(AngX, AngY, AngZ, hasAngle);
 }
 
 

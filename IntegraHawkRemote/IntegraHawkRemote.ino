@@ -6,7 +6,7 @@
 Giro g;
 Antenna a;
 Autopilot ap;
-Angle aCurse(0, 0);
+Angle aCurse(0, 0, 0);
 uint32_t timer;
 bool noPilot = false;
 void setup() {
@@ -22,8 +22,8 @@ void loop() {
 	String data = a.receive();
 	Angle aReq(data);
 	if (aReq.HasAngle == true) {
-		aCurse = Angle(aReq.AngleX, aReq.AngleY);
-		/*	
+		aCurse = Angle(aReq.AngleX, aReq.AngleY, 0.0);
+		/*
 			noPilot = false;
 			timer = micros();*/
 	}

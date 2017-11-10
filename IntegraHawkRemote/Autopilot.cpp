@@ -12,28 +12,40 @@ Autopilot::Autopilot()
 }
 void Autopilot::init()
 {
-	servoX.attach(10);
-	servoY.attach(11);
-	servoZ.attach(9);
+	servoX.attach(9);
+	servoY.attach(10);
+	servoZ.attach(11);
 }
 void Autopilot::Control(Angle ReqAngle, Angle CurrentAngle)
 {
-	int servoPosX, servoPosZ;
+	int servoPosX, servoPosY, servoPosZ;
 	//Giro y Compensacion guiñada
 	servoPosX = getServoPositionX(ReqAngle.AngleX, CurrentAngle.AngleX);
 	servoPosZ = getServoPositionZ(servoPosX);
 	servoMove(servoPosX, 'X');
 	servoMove(servoPosZ, 'Z');
-
-	//y lo mismo va para Y pero con una correccion en el angulo 0
-	//para que deje cabezar aerodinamicamente al plano
+	//el strict mode debe ser modificable desde el control
+	servoPosY = getServoPositionY(ReqAngle.AngleY, CurrentAngle.AngleY, true);
+	//Serial.println("PosX: " + String(servoPosX) + " PosZ: " + String(servoPosZ) + " PosY: " + String(servoPosY));
+	servoMove(servoPosY, 'Y');
+}
+int Autopilot::getServoPositionY(double ReqAngle, double CurrentAngle, bool StrictMode)
+{
+	int angCalc, servoAng;
+	angCalc = ReqAngle - CurrentAngle;
+	if (StrictMode == true && ReqAngle == 0 && CurrentAngle > -18 && CurrentAngle < 18) { angCalc = 0; }
+	if (StrictMode == true && ReqAngle == 0 && angCalc > 0) { angCalc = angCalc - 18; }
+	if (StrictMode == true && ReqAngle == 0 && angCalc < 0) { angCalc = angCalc + 18; }
+	servoAng = map(angCalc, -45, 45, _minServoX, _maxServoX);
+	if (servoAng > _maxServoX)servoAng = _maxServoX;
+	if (servoAng < _minServoX)servoAng = _minServoX;
+	return servoAng;
 }
 int Autopilot::getServoPositionX(double ReqAngle, double CurrentAngle)
 {
-	int position, servoAng;
-	position = ReqAngle - CurrentAngle;
-	//Serial.println("Pos: " + String(position) + " RA: " + String(ReqAngle) + " CA: " + String(CurrentAngle));
-	servoAng = map(position, -45, 45, _minServoX, _maxServoX);
+	int angCalc, servoAng;
+	angCalc = ReqAngle - CurrentAngle;
+	servoAng = map(angCalc, -45, 45, _minServoX, _maxServoX);
 	if (servoAng > _maxServoX)servoAng = _maxServoX;
 	if (servoAng < _minServoX)servoAng = _minServoX;
 	return servoAng;
@@ -41,7 +53,7 @@ int Autopilot::getServoPositionX(double ReqAngle, double CurrentAngle)
 int Autopilot::getServoPositionZ(int PositionX)
 {
 	int position;
-	position = PositionX * 0.3;
+	position = map(PositionX, _minServoX, _maxServoX, _minServoZ, _maxServoZ);
 	return position;
 }
 void Autopilot::servoMove(int position, char ServoCoor)
@@ -49,6 +61,7 @@ void Autopilot::servoMove(int position, char ServoCoor)
 	if (ServoCoor == 'X')
 	{
 		if (position != CurrentPosX) {
+			Serial.println("Pos: " + String(CurrentPosX));
 			CurrentPosX = position;
 			servoX.write(position);
 		}

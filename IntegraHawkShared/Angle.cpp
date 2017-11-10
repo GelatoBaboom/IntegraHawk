@@ -3,16 +3,18 @@
 // 
 
 #include "Angle.h"
-Angle::Angle(double x, double y)
+Angle::Angle(double x, double y, double z)
 {
 	AngleX = x;
 	AngleY = y;
+	AngleZ = z;
 	HasAngle = true;
 }
-Angle::Angle(double x, double y, bool hasAngle)
+Angle::Angle(double x, double y, double z, bool hasAngle)
 {
 	AngleX = x;
 	AngleY = y;
+	AngleZ = z;
 	HasAngle = hasAngle;
 }
 Angle::Angle(String xy)
@@ -39,17 +41,19 @@ Angle::Angle(String xy)
 	if (Xval.length() > 0 && Yval.length() > 0) {
 		AngleX = Xval.toDouble();
 		AngleY = Yval.toDouble();
+		AngleZ = 0.0;
 		HasAngle = true;
 	}
 	else
 	{
 		AngleX = 0.0;
 		AngleY = 0.0;
+		AngleZ = 0.0;
 		HasAngle = false;
 	}
 }
 String Angle::toString()
 {
-	return "X:" + String(AngleX) + ";Y:" + String(AngleY) + ";";
+	return "X:" + String(AngleX) + ";Y:" + String(AngleY) + ";Z:" + String(AngleZ) + ";";
 }
 
