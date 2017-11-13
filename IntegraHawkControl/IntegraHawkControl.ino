@@ -6,10 +6,11 @@ int valueX;
 int valueY;
 int positionx;
 int positiony;
-Antenna ant;
+#include <SoftwareSerial.h>
+SoftwareSerial antSerial(2, 3);
 void setup() {
 	Serial.begin(9600);
-	ant.begin(9600);
+	antSerial.begin(9600);
 }
 
 void loop() {
@@ -20,7 +21,7 @@ void loop() {
 	positionx = actPositionx;
 	positiony = actPositiony;
 	Angle a((double)positionx, (double)positiony, 0.0);
-	Serial.println(a.toString());
-	ant.send(a.toString());
-	delay(50);
+	//Serial.println(a.toString());
+	antSerial.println(a.toString());
+	delay(10);
 }

@@ -16,7 +16,7 @@ protected:
 
 public:
 	void begin(int baudrate);
-	void send(String data);
+	void sendData(String data);
 	String  receive();
 private:
 };

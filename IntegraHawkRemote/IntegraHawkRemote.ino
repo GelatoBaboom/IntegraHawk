@@ -4,22 +4,20 @@
 #include "giro.h"
 #include "Antenna.h"
 Giro g;
-Antenna a;
+Antenna ant;
 Autopilot ap;
 Angle aCurse(0, 0, 0);
 uint32_t timer;
 bool noPilot = false;
 void setup() {
-	Serial.begin(115200);
-	Serial.println("Inicializacion");
+	//Serial.begin(115200);
 	g.init();
 	ap.init();
-	a.begin(9600);
-	Serial.println("Inicialiced");
+	ant.begin(9600);
 }
 
 void loop() {
-	String data = a.receive();
+	String data = ant.receive();
 	Angle aReq(data);
 	if (aReq.HasAngle == true) {
 		aCurse = Angle(aReq.AngleX, aReq.AngleY, 0.0);
@@ -44,6 +42,7 @@ void loop() {
 	}
 	Angle ang = g.GetAnglesSecure();
 	ap.Control(aCurse, ang);
+
 
 }
 
