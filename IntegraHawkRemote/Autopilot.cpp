@@ -36,8 +36,8 @@ int Autopilot::getServoPositionY(double ReqAngle, double CurrentAngle, bool Stri
 	bool hasReqAngle = false;
 	if (ReqAngle > 1 || ReqAngle < -1) { hasReqAngle = true; }
 	if (StrictMode == true && hasReqAngle == false && CurrentAngle > -18 && CurrentAngle < 18) { angCalc = 0; }
-	if (StrictMode == true && hasReqAngle == false && angCalc > 1) { angCalc = angCalc - 18; }
-	if (StrictMode == true && hasReqAngle == false && angCalc < -1) { angCalc = angCalc + 18; }
+	//if (StrictMode == true && hasReqAngle == false && angCalc > 1) { angCalc = angCalc - 18; }
+	//if (StrictMode == true && hasReqAngle == false && angCalc < -1) { angCalc = angCalc + 18; }
 	servoAng = map(angCalc, -45, 45, _minServoY, _maxServoY);
 	if (servoAng > _maxServoY)servoAng = _maxServoY;
 	if (servoAng < _minServoY)servoAng = _minServoY;

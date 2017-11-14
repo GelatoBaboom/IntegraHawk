@@ -18,9 +18,10 @@ void Antenna::sendData(String data)
 }
 String Antenna::receive()
 {
-	String data = "";
-	while (Serial.available()) {
-		char c = Serial.read();
+	String data = ""; 
+	char c = '0';
+	while (Serial.available() && c !='\n') {
+		c = Serial.read();
 		data += c;
 	}
 	return data;
