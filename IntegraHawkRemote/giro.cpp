@@ -36,7 +36,7 @@ void Giro::init()
 	mpu.initialize();
 	mpu.dmpInitialize();
 	mpu.setDMPEnabled(true);
-	attachInterrupt(0, dmpDataReady, RISING);
+	attachInterrupt(2, dmpDataReady, RISING);
 	mpuIntStatus = mpu.getIntStatus();
 	packetSize = mpu.dmpGetFIFOPacketSize();
 
