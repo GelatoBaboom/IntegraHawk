@@ -63,12 +63,15 @@ Angle Giro::GetAngles()
 	if ((mpuIntStatus & 0x10) || fifoCount == 1024) {
 		mpu.resetFIFO();
 		//COMENTAR_OFICIAL
-		Serial.println(F("FIFO overflow!"));
+		//Serial.println(F("FIFO overflow!"));
 	}
 	else if (mpuIntStatus & 0x02) {
 		while (fifoCount < packetSize) fifoCount = mpu.getFIFOCount();
 		mpu.getFIFOBytes(fifoBuffer, packetSize);
 		fifoCount -= packetSize;
+		//added to improve stability
+		mpu.resetFIFO();
+		
 		mpu.dmpGetQuaternion(&q, fifoBuffer);
 		mpu.dmpGetGravity(&gravity, &q);
 		mpu.dmpGetYawPitchRoll(ypr, &q, &gravity);
