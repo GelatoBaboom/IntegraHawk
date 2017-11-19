@@ -8,12 +8,14 @@ Antenna ant;
 Autopilot ap;
 Angle aCurse(0, 0, 0);
 uint32_t timer;
+bool led = false;
 bool noPilot = false;
 void setup() {
 	//Serial.begin(115200);
 	g.init();
 	ap.init();
 	ant.begin(9600);
+	pinMode(13, OUTPUT);
 }
 
 void loop() {
@@ -26,6 +28,7 @@ void loop() {
 			timer = micros();*/
 	}
 	else {
+		
 		/*if (noPilot == false) {
 			noPilot = true;
 			timer = micros();
@@ -41,8 +44,14 @@ void loop() {
 		}*/
 	}
 	Angle ang = g.GetAnglesSecure();
+	//Serial.println(ang.toString());
 	ap.Control(aCurse, ang);
-
+	/*if (((micros() - timer) / 1000) > 250)
+	{
+		led = !led;
+		digitalWrite(13, led);
+		timer = micros();
+	}*/
 
 }
 

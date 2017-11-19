@@ -114,14 +114,18 @@ Angle Giro::GetAngles()
 										   Bit3 I2C_MST_INT: This bit automatically sets to 1 when an I2C Master interrupt has been generated. For a list of I2C Master interrupts, please refer to Register 54.
 										   Bit1 DATA_RDY_INT This bit automatically sets to 1 when a Data Ready interrupt is generated.
 										   */
+		//los delay son impresindibles
 		if (mpuIntStatus & B10000) { //FIFO_OFLOW_INT
-			Serial.println(F("\tFIFO buffer overflow interrupt "));
+			//Serial.println(F("\tFIFO buffer overflow interrupt "));
+			delay(1);
 		}
 		if (mpuIntStatus & B1000) { //I2C_MST_INT
-			Serial.println(F("\tSlave I2c Device Status Int "));
+			//Serial.println(F("\tSlave I2c Device Status Int "));
+			delay(1);
 		}
 		if (mpuIntStatus & B1) { //DATA_RDY_INT
-			Serial.println(F("\tData Ready interrupt "));
+			//Serial.println(F("\tData Ready interrupt "));
+			delay(1);
 		}
 		//Serial.println();
 		//I2C_MST_STATUS
@@ -165,11 +169,11 @@ void Giro::MPU6050Connect() {
 
 		MPUInitCntr++;
 
-		Serial.print(F("MPU connection Try #"));
+		/*Serial.print(F("MPU connection Try #"));
 		Serial.println(MPUInitCntr);
 		Serial.print(F("DMP Initialization failed (code "));
 		Serial.print(StatStr[devStatus]);
-		Serial.println(F(")"));
+		Serial.println(F(")"));*/
 
 		if (MPUInitCntr >= 10) return; //only try 10 times
 		delay(1000);
@@ -184,11 +188,11 @@ void Giro::MPU6050Connect() {
 	//  mpu.setYGyroOffset(MPUOffsets[4]);
 	//  mpu.setZGyroOffset(MPUOffsets[5]);
 
-	Serial.println(F("Enabling DMP..."));
+	//Serial.println(F("Enabling DMP..."));
 	mpu.setDMPEnabled(true);
 	// enable Arduino interrupt detection
 
-	Serial.println(F("Enabling interrupt detection (Arduino external interrupt pin 2 on the Uno)..."));
+	//Serial.println(F("Enabling interrupt detection (Arduino external interrupt pin 2 on the Uno)..."));
 	//attachInterrupt(2, dmpDataReady, FALLING); //pin 2 on the Uno
 
 	mpuIntStatus = mpu.getIntStatus(); // Same

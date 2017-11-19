@@ -20,13 +20,11 @@ String Antenna::receive()
 {
 	String data = "";
 	char c = '0';
-	while (Serial.available()) {
-		if ((c == '\r') || (c == '\n')) { break; }
-		else {
-			c = (char)Serial.read();
-			data += c;
-		}
+	while (Serial.available() && ((c != '\r') || (c != '\n'))) {
+		c = (char)Serial.read();
+		data += c;
 	}
+	Serial.flush();
 	return data;
 }
 
