@@ -22,7 +22,8 @@ public:
 	Angle GetAngles();
 	Angle GetAnglesSecure();
 private:
-	
+	void i2cSetup();
+	void MPU6050Connect();
 };
 
 /*extern GiroClass Giro;*/
