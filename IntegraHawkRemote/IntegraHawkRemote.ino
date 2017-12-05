@@ -8,6 +8,8 @@ Antenna ant;
 Autopilot ap;
 Angle aCurse(0, 0, 0);
 uint32_t timer;
+uint32_t pilotTimer;
+int blinkTime = 250;
 bool led = false;
 bool noPilot = false;
 void setup() {
@@ -19,39 +21,36 @@ void setup() {
 }
 
 void loop() {
-	String data = ant.receive();
-	Angle aReq(data);
+	//String data = ant.receive();
+	Angle aReq = ant.receiveData();
 	if (aReq.HasAngle == true) {
 		aCurse = Angle(aReq.AngleX, aReq.AngleY, 0.0);
-		/*
-			noPilot = false;
-			timer = micros();*/
+		noPilot = false;
+		pilotTimer = micros();
 	}
 	else {
-		
-		/*if (noPilot == false) {
+
+		if (noPilot == false) {
 			noPilot = true;
-			timer = micros();
+			pilotTimer = micros();
 		}
-		if (((micros() - timer) / 1000000) > 3)
+		if (((micros() - pilotTimer) / 1000) > 10000)
 		{
-			Serial.println("No hay piloto.. Dios!!");
-			timer = micros();
+			aCurse = Angle(-20, -18, 0.0);
 		}
-		else
-		{
-			Serial.println("Tiempo: " + String(timer));
-		}*/
 	}
+
 	Angle ang = g.GetAnglesSecure();
-	//Serial.println(ang.toString());
 	ap.Control(aCurse, ang);
-	/*if (((micros() - timer) / 1000) > 250)
+	//Led Blink 
+	if (aReq.HasAngle == true) { blinkTime = led ? 50 : 500; }
+	else { blinkTime = 600; }
+	if (((micros() - timer) / 1000) > blinkTime)
 	{
 		led = !led;
 		digitalWrite(13, led);
 		timer = micros();
-	}*/
+	}
 
 }
 

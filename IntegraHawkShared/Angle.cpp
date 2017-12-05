@@ -33,7 +33,7 @@ Angle::Angle(String xy)
 		else if (key == "Y:")
 		{
 			if (c != ';') { Yval += c; }
-			else { key = ""; ; }
+			else { key = ""; break; }
 		}
 		else { key += c; }
 		c = '*';

@@ -5,6 +5,8 @@
 
 #if defined(ARDUINO) && ARDUINO >= 100
 #include "Arduino.h"
+#include "Angle.h"
+
 #else
 #include "WProgram.h"
 #endif
@@ -18,6 +20,7 @@ public:
 	void begin(int baudrate);
 	void sendData(String data);
 	String  receive();
+	Angle receiveData();
 private:
 };
 

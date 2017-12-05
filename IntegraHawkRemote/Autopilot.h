@@ -22,9 +22,9 @@ private:
 	int getServoPositionY(double ReqAngle, double CurrentAngle, bool StrictMode);
 	int getServoPositionZ(int PositionX);
 	void servoMove(int position, char ServoCoor);
-	int _maxServoX = 180;
+	int _maxServoX = 90;
 	int _minServoX = 0;
-	int _maxServoY = 180;
+	int _maxServoY = 90;
 	int _minServoY = 0;
 	int _maxServoZ = 117;
 	int _minServoZ = 63;
