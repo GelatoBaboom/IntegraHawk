@@ -32,7 +32,7 @@ void loop() {
 	////Serial.println(a.toString());
 	//antSerial.println(a.toString());
 
-	int actPositionx = map(valueX, 0, 1023, -126, 126);
+	int actPositionx = map(valueX, 0, 1023, 126, -126);
 	int actPositiony = map(valueY, 0, 1023, -126, 126);
 	positionx = actPositionx;
 	positiony = actPositiony;
