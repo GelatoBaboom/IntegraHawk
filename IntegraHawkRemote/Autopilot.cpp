@@ -29,10 +29,10 @@ void Autopilot::Control(Angle ReqAngle, Angle CurrentAngle)
 int Autopilot::getServoPositionAlRgt(Angle ReqAngle, Angle CurrentAngle)
 {
 	int angCalcX, angCalcY, servoAng, servoAngX, servoAngY;
-	angCalcX = ReqAngle.AngleX - CurrentAngle.AngleX;
 	angCalcY = ReqAngle.AngleY - CurrentAngle.AngleY;
+	angCalcX = ReqAngle.AngleX - CurrentAngle.AngleX;
 
-	servoAngX = map(angCalcX, -45, 45, _minServoAlRgt, _maxServoAlRgt);
+	servoAngX = map(angCalcX, -45, 45, _minServoXDif, _maxServoXDif);
 	servoAngY = map(angCalcY, -45, 45, _minServoAlRgt, _maxServoAlRgt);
 	servoAng = servoAngX + servoAngY;
 	if (servoAng > _maxServoAlRgt)servoAng = _maxServoAlRgt;
@@ -45,7 +45,7 @@ int Autopilot::getServoPositionAlLft(Angle ReqAngle, Angle CurrentAngle)
 	angCalcX = ReqAngle.AngleX - CurrentAngle.AngleX;
 	angCalcY = ReqAngle.AngleY - CurrentAngle.AngleY;
 
-	servoAngX = map(angCalcX, -45, 45, _maxServoAlRgt, _minServoAlRgt);
+	servoAngX = map(angCalcX, -45, 45, _maxServoXDif, _minServoXDif);
 	servoAngY = map(angCalcY, -45, 45, _minServoAlRgt, _maxServoAlRgt);
 	servoAng = servoAngX + servoAngY;
 	if (servoAng > _maxServoAlRgt)servoAng = _maxServoAlRgt;

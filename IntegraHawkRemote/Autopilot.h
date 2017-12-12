@@ -23,6 +23,8 @@ private:
 	void servoMove(int position, char ServoCoor);
 	int _maxServoAlRgt = 180;
 	int _minServoAlRgt = 0;
+	int _maxServoXDif = 90;
+	int _minServoXDif = -90;
 	int _maxServoESC = 1000;
 	int _minServoESC = 2000;
 };
