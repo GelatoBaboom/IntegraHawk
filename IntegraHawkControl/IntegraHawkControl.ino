@@ -2,10 +2,10 @@
 #include "Antenna.h"
 const int analogPinX = A0;
 const int analogPinY = A1;
+const int analogPinESC = A2;
 int valueX = 0;
 int valueY = 0;
-int positionx;
-int positiony;
+int valueESC = 0;
 //para pruebas 
 uint32_t timer;
 //
@@ -19,6 +19,8 @@ void setup() {
 void loop() {
 	valueX = analogRead(analogPinX);
 	valueY = analogRead(analogPinY);
+	valueESC = analogRead(analogPinESC);
+
 	/*if (((micros() - timer) / 1000) > 2000)
 	{
 		valueX = valueX > 0 ? 0 : 1023;
@@ -34,11 +36,9 @@ void loop() {
 
 	int actPositionx = map(valueX, 0, 1023, 126, -126);
 	int actPositiony = map(valueY, 0, 1023, -126, 126);
-	positionx = actPositionx;
-	positiony = actPositiony;
-	//Serial.println(a.toString());
-	byte buffer[4] = { (char)-127,(char)actPositionx, (char)actPositiony,(char)127 };
-	antSerial.write(buffer, 4);
-	delay(80);
+	int actPositionESC = map(valueESC, 0, 1023, 126, -126);
+	byte buffer[5] = { (char)-127,(char)actPositionx, (char)actPositiony,(char)actPositionESC,(char)127 };
+	antSerial.write(buffer, 5);
+	delay(50);
 
 }

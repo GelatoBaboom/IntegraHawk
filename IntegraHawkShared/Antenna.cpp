@@ -4,7 +4,7 @@
 
 #include "Antenna.h"
 uint32_t timeout;
-char data[4];
+char data[5];
 bool done = false;
 int datapos = 0;
 //#include <SoftwareSerial.h>
@@ -44,12 +44,12 @@ Angle Antenna::receiveData()
 	//bool takeTooLong = false;
 	Angle a = Angle(0, 0, 0);
 	a.HasAngle = false;
-	if (Serial.available() > 3) {
-		char buff[4];
+	if (Serial.available() > 4) {
+		char buff[5];
 		int pos = 0;
 		//Serial.readBytes(&buff[pos], 1);
-		Serial.readBytes(buff, 4);
-		while (pos < 4) {
+		Serial.readBytes(buff, 5);
+		while (pos < 5) {
 			if (datapos < 1)
 			{
 				if ((int)buff[pos] < -126)
@@ -58,7 +58,7 @@ Angle Antenna::receiveData()
 					datapos = 1;
 					//Serial.println("pos1: " + String((int)buff[pos]));
 				}
-			}else  if (datapos > 0 && datapos < 3)
+			}else  if (datapos > 0 && datapos < 4)
 			{
 				if ((int)buff[pos] > -127 && (int)buff[pos] < 127)
 				{
@@ -66,7 +66,7 @@ Angle Antenna::receiveData()
 					datapos = datapos + 1;
 					//Serial.println("pos23: " + String((int)buff[pos]));
 				}
-			}else if (datapos > 2)
+			}else if (datapos > 3)
 			{
 				if ((int)buff[pos] > 126)
 				{
@@ -74,22 +74,23 @@ Angle Antenna::receiveData()
 					datapos = 0;
 					done = true;
 					//Serial.println("pos4: " + String((int)buff[pos]));
-					pos = 3;
+					pos = 4;
 				}
 			}
 			pos = pos + 1;
 		}
-		//Serial.println("data: " + String((int)buff[0]) + " " + String((int)buff[1]) + " " + String((int)buff[2]) + " " + String((int)buff[3]));
+		//Serial.println("data: " + String((int)buff[0]) + " " + String((int)buff[1]) + " " + String((int)buff[2]) + " " + String((int)buff[3]) + " " + String((int)buff[4]));
 		if (done == true)
 		{
 			a.AngleX = map((int)data[1], -127, 127, -45, 45 );
 			a.AngleY = map((int)data[2], -127, 127, -45, 45);
+			a.ESC = map((int)data[3], -127, 127, 1000, 2000);
 			done = false;
 			a.HasAngle = true;
-			while (Serial.available() > 0) {
-				char t = Serial.read();
-			}
-			//Serial.println(a.toString());
+			//clean buffer fast
+			char buff[100];
+			Serial.readBytes(buff, Serial.available());
+			
 		}
 
 		//timeout = micros();

@@ -19,6 +19,7 @@ public:
 	double AngleX;
 	double AngleY;
 	double AngleZ;
+	double ESC;
 	bool HasAngle;
 	String toString();
 private:

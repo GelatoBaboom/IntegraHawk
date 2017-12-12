@@ -1,85 +1,79 @@
 #include "Autopilot.h"
 #include <Servo.h>
-Servo servoX;
-Servo servoY;
-Servo servoZ;
-int CurrentPosX;
-int CurrentPosY;
-int CurrentPosZ;
+Servo servoAlRgt;
+Servo servoAlLft;
+Servo servoESC;
+int CurrentPosRgt;
+int CurrentPosLft;
+int CurrentPosESC;
 Autopilot::Autopilot()
 {
 
 }
 void Autopilot::init()
 {
-	servoX.attach(9);
-	servoY.attach(10);
-	servoZ.attach(11);
+	servoAlRgt.attach(9);
+	servoAlLft.attach(10);
+	servoESC.attach(11);
 }
 void Autopilot::Control(Angle ReqAngle, Angle CurrentAngle)
 {
-	int servoPosX, servoPosY, servoPosZ;
-	//Giro y Compensacion guiñada
-	servoPosX = getServoPositionX(ReqAngle.AngleX, CurrentAngle.AngleX);
-	servoPosZ = getServoPositionZ(servoPosX);
-	servoMove(servoPosX, 'X');
-	servoMove(servoPosZ, 'Z');
-	//el strict mode debe ser modificable desde el control
-	servoPosY = getServoPositionY(ReqAngle.AngleY, CurrentAngle.AngleY, true);
-	//Serial.println("PosX: " + String(servoPosX) + " PosZ: " + String(servoPosZ) + " PosY: " + String(servoPosY));
-	servoMove(servoPosY, 'Y');
+	int servoPosAlRgt, servoPosAlLtf, servoPosESC;
+	servoPosAlRgt = getServoPositionAlRgt(ReqAngle, CurrentAngle);
+	servoPosAlLtf = getServoPositionAlLft(ReqAngle, CurrentAngle);
+	servoMove(servoPosAlRgt, 'R');
+	servoMove(servoPosAlLtf, 'L');
+	//esc provisorio para saber si anda
+	servoMove(map(ReqAngle.ESC, 1000, 2000, 0, 180), 'E');
 }
-int Autopilot::getServoPositionY(double ReqAngle, double CurrentAngle, bool StrictMode)
+int Autopilot::getServoPositionAlRgt(Angle ReqAngle, Angle CurrentAngle)
 {
-	int angCalc, servoAng;
-	angCalc = ReqAngle - CurrentAngle;
-	bool hasReqAngle = false;
-	if (ReqAngle > 1 || ReqAngle < -1) { hasReqAngle = true; }
-	if (StrictMode == true && hasReqAngle == false && CurrentAngle > -18 && CurrentAngle < 18) { angCalc = 0; }
-	//if (StrictMode == true && hasReqAngle == false && angCalc > 1) { angCalc = angCalc - 18; }
-	//if (StrictMode == true && hasReqAngle == false && angCalc < -1) { angCalc = angCalc + 18; }
-	servoAng = map(angCalc, -45, 45, _minServoY, _maxServoY);
-	if (servoAng > _maxServoY)servoAng = _maxServoY;
-	if (servoAng < _minServoY)servoAng = _minServoY;
+	int angCalcX, angCalcY, servoAng, servoAngX, servoAngY;
+	angCalcX = ReqAngle.AngleX - CurrentAngle.AngleX;
+	angCalcY = ReqAngle.AngleY - CurrentAngle.AngleY;
+
+	servoAngX = map(angCalcX, -45, 45, _minServoAlRgt, _maxServoAlRgt);
+	servoAngY = map(angCalcY, -45, 45, _minServoAlRgt, _maxServoAlRgt);
+	servoAng = servoAngX + servoAngY;
+	if (servoAng > _maxServoAlRgt)servoAng = _maxServoAlRgt;
+	if (servoAng < _minServoAlRgt)servoAng = _minServoAlRgt;
 	return servoAng;
 }
-int Autopilot::getServoPositionX(double ReqAngle, double CurrentAngle)
+int Autopilot::getServoPositionAlLft(Angle ReqAngle, Angle CurrentAngle)
 {
-	int angCalc, servoAng;
-	angCalc = ReqAngle -CurrentAngle;
-	servoAng = map(angCalc, -45, 45, _minServoX, _maxServoX);
-	if (servoAng > _maxServoX)servoAng = _maxServoX;
-	if (servoAng < _minServoX)servoAng = _minServoX;
+	int angCalcX, angCalcY, servoAng, servoAngX, servoAngY;
+	angCalcX = ReqAngle.AngleX - CurrentAngle.AngleX;
+	angCalcY = ReqAngle.AngleY - CurrentAngle.AngleY;
+
+	servoAngX = map(angCalcX, -45, 45, _maxServoAlRgt, _minServoAlRgt);
+	servoAngY = map(angCalcY, -45, 45, _minServoAlRgt, _maxServoAlRgt);
+	servoAng = servoAngX + servoAngY;
+	if (servoAng > _maxServoAlRgt)servoAng = _maxServoAlRgt;
+	if (servoAng < _minServoAlRgt)servoAng = _minServoAlRgt;
 	return servoAng;
-}
-int Autopilot::getServoPositionZ(int PositionX)
-{
-	int position;
-	position = map(PositionX, _minServoX, _maxServoX, _minServoZ, _maxServoZ);
-	return position;
 }
 void Autopilot::servoMove(int position, char ServoCoor)
 {
-	if (ServoCoor == 'X')
+	if (ServoCoor == 'R')
 	{
-		if (position != CurrentPosX) {
+		if (position != CurrentPosRgt) {
 			//Serial.println("Pos: " + String(CurrentPosX));
-			CurrentPosX = position;
-			servoX.write(position);
+			CurrentPosRgt = position;
+			servoAlRgt.write(position);
 		}
 	}
-	if (ServoCoor == 'Y')
+	if (ServoCoor == 'L')
 	{
-		if (position != CurrentPosY) {
-			CurrentPosY = position;
-			servoY.write(position);
+		if (position != CurrentPosLft) {
+			CurrentPosLft = position;
+			servoAlLft.write(position);
 		}
 	}
-	if (ServoCoor == 'Z')
+	if (ServoCoor == 'E')
 	{
-		if (position != CurrentPosZ) {
-			CurrentPosZ = position;
-			servoZ.write(position);
+		if (position != CurrentPosESC) {
+			CurrentPosESC = position;
+			servoESC.write(position);
 		}
 	}
 

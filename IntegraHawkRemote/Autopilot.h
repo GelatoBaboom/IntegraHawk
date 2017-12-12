@@ -18,16 +18,13 @@ public:
 	void init();
 	void Control(Angle ReqAngle, Angle CurrentAngle);
 private:
-	int getServoPositionX(double ReqAngle, double CurrentAngle);
-	int getServoPositionY(double ReqAngle, double CurrentAngle, bool StrictMode);
-	int getServoPositionZ(int PositionX);
+	int getServoPositionAlRgt(Angle ReqAngle, Angle CurrentAngle);
+	int getServoPositionAlLft(Angle ReqAngle, Angle CurrentAngle);
 	void servoMove(int position, char ServoCoor);
-	int _maxServoX = 90;
-	int _minServoX = 0;
-	int _maxServoY = 90;
-	int _minServoY = 0;
-	int _maxServoZ = 117;
-	int _minServoZ = 63;
+	int _maxServoAlRgt = 180;
+	int _minServoAlRgt = 0;
+	int _maxServoESC = 1000;
+	int _minServoESC = 2000;
 };
 
 #endif

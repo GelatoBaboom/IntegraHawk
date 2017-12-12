@@ -25,6 +25,7 @@ void loop() {
 	Angle aReq = ant.receiveData();
 	if (aReq.HasAngle == true) {
 		aCurse = Angle(aReq.AngleX, aReq.AngleY, 0.0);
+		aCurse.ESC = aReq.ESC;
 		noPilot = false;
 		pilotTimer = micros();
 	}
