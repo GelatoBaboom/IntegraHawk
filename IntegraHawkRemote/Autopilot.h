@@ -21,8 +21,8 @@ private:
 	int getServoPositionAlRgt(Angle ReqAngle, Angle CurrentAngle);
 	int getServoPositionAlLft(Angle ReqAngle, Angle CurrentAngle);
 	void servoMove(int position, char ServoCoor);
-	int _maxServoAlRgt = 180;
-	int _minServoAlRgt = 0;
+	int _maxServoAl = 180;
+	int _minServoAl = 0;
 	int _maxServoXDif = 90;
 	int _minServoXDif = -90;
 	int _maxServoESC = 1000;

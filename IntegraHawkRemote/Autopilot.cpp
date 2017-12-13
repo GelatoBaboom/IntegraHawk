@@ -33,10 +33,10 @@ int Autopilot::getServoPositionAlRgt(Angle ReqAngle, Angle CurrentAngle)
 	angCalcX = ReqAngle.AngleX - CurrentAngle.AngleX;
 
 	servoAngX = map(angCalcX, -45, 45, _minServoXDif, _maxServoXDif);
-	servoAngY = map(angCalcY, -45, 45, _minServoAlRgt, _maxServoAlRgt);
+	servoAngY = map(angCalcY, -45, 45, _minServoAl, _maxServoAl);
 	servoAng = servoAngX + servoAngY;
-	if (servoAng > _maxServoAlRgt)servoAng = _maxServoAlRgt;
-	if (servoAng < _minServoAlRgt)servoAng = _minServoAlRgt;
+	if (servoAng > _maxServoAl)servoAng = _maxServoAl;
+	if (servoAng < _minServoAl)servoAng = _minServoAl;
 	return servoAng;
 }
 int Autopilot::getServoPositionAlLft(Angle ReqAngle, Angle CurrentAngle)
@@ -45,11 +45,11 @@ int Autopilot::getServoPositionAlLft(Angle ReqAngle, Angle CurrentAngle)
 	angCalcX = ReqAngle.AngleX - CurrentAngle.AngleX;
 	angCalcY = ReqAngle.AngleY - CurrentAngle.AngleY;
 
-	servoAngX = map(angCalcX, -45, 45, _maxServoXDif, _minServoXDif);
-	servoAngY = map(angCalcY, -45, 45, _minServoAlRgt, _maxServoAlRgt);
+	servoAngX = map(angCalcX, -45, 45, _minServoXDif, _maxServoXDif);
+	servoAngY = map(angCalcY, -45, 45, _maxServoAl, _minServoAl);
 	servoAng = servoAngX + servoAngY;
-	if (servoAng > _maxServoAlRgt)servoAng = _maxServoAlRgt;
-	if (servoAng < _minServoAlRgt)servoAng = _minServoAlRgt;
+	if (servoAng > _maxServoAl)servoAng = _maxServoAl;
+	if (servoAng < _minServoAl)servoAng = _minServoAl;
 	return servoAng;
 }
 void Autopilot::servoMove(int position, char ServoCoor)
