@@ -37,7 +37,8 @@ void loop() {
 		}
 		if (((micros() - pilotTimer) / 1000) > 10000)
 		{
-			aCurse = Angle(-20, -18, 0.0);
+			aCurse = Angle(-15, -15, 0.0);
+			aCurse.ESC = 1000;
 		}
 	}
 
