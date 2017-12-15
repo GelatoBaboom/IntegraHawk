@@ -32,8 +32,8 @@ int Autopilot::getServoPositionAlRgt(Angle ReqAngle, Angle CurrentAngle)
 	angCalcY = ReqAngle.AngleY - CurrentAngle.AngleY;
 	angCalcX = ReqAngle.AngleX - CurrentAngle.AngleX;
 
-	servoAngX = map(angCalcX, -45, 45, _minServoXDif, _maxServoXDif);
-	servoAngY = map(angCalcY, -45, 45, _minServoAl, _maxServoAl);
+	servoAngX = map(angCalcX, _minX, _maxX, _minServoXDif, _maxServoXDif);
+	servoAngY = map(angCalcY, _minY, _maxY, _minServoAl, _maxServoAl);
 	servoAng = servoAngX + servoAngY;
 	if (servoAng > _maxServoAl)servoAng = _maxServoAl;
 	if (servoAng < _minServoAl)servoAng = _minServoAl;
@@ -45,8 +45,8 @@ int Autopilot::getServoPositionAlLft(Angle ReqAngle, Angle CurrentAngle)
 	angCalcX = ReqAngle.AngleX - CurrentAngle.AngleX;
 	angCalcY = ReqAngle.AngleY - CurrentAngle.AngleY;
 
-	servoAngX = map(angCalcX, -45, 45, _minServoXDif, _maxServoXDif);
-	servoAngY = map(angCalcY, -45, 45, _maxServoAl, _minServoAl);
+	servoAngX = map(angCalcX, _minX, _maxX, _minServoXDif, _maxServoXDif);
+	servoAngY = map(angCalcY, _minY, _maxY, _maxServoAl, _minServoAl);
 	servoAng = servoAngX + servoAngY;
 	if (servoAng > _maxServoAl)servoAng = _maxServoAl;
 	if (servoAng < _minServoAl)servoAng = _minServoAl;
@@ -56,17 +56,19 @@ void Autopilot::servoMove(int position, char ServoCoor)
 {
 	if (ServoCoor == 'R')
 	{
-		if (position != CurrentPosRgt) {
+		int pos = position + _trimServoRgt;
+		if (pos != CurrentPosRgt) {
 			//Serial.println("Pos: " + String(CurrentPosX));
-			CurrentPosRgt = position;
-			servoAlRgt.write(position);
+			CurrentPosRgt = pos;
+			servoAlRgt.write(pos);
 		}
 	}
 	if (ServoCoor == 'L')
 	{
-		if (position != CurrentPosLft) {
-			CurrentPosLft = position;
-			servoAlLft.write(position);
+		int pos = position + _trimServoLft;
+		if (pos != CurrentPosLft) {
+			CurrentPosLft = pos;
+			servoAlLft.write(pos);
 		}
 	}
 	if (ServoCoor == 'E')

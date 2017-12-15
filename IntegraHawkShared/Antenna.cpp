@@ -15,6 +15,7 @@ void Antenna::begin(int baudrate)
 	//para que tenga logica que lo pase como parametro
 	//antSerial.begin(baudrate);
 	Serial.begin(baudrate);
+	//Serial.setTimeout(80);
 }
 void Antenna::sendData(String data)
 {
