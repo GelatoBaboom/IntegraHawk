@@ -21,7 +21,6 @@ void setup() {
 }
 
 void loop() {
-	//String data = ant.receive();
 	Angle aReq = ant.receiveData();
 	if (aReq.HasAngle == true) {
 		aCurse = Angle(aReq.AngleX, aReq.AngleY, 0.0);

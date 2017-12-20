@@ -48,7 +48,7 @@ VectorInt16 aaWorld;    // [x, y, z]            world-frame accel sensor measure
 VectorFloat gravity;    // [x, y, z]            gravity vector
 float euler[3];         // [psi, theta, phi]    Euler angle container
 float ypr[3];           // [yaw, pitch, roll]   yaw/pitch/roll container and gravity vector
-//float Yaw, Pitch, Roll; // in degrees
+						//float Yaw, Pitch, Roll; // in degrees
 
 Giro::Giro()
 {
@@ -114,7 +114,7 @@ Angle Giro::GetAngles()
 										   Bit3 I2C_MST_INT: This bit automatically sets to 1 when an I2C Master interrupt has been generated. For a list of I2C Master interrupts, please refer to Register 54.
 										   Bit1 DATA_RDY_INT This bit automatically sets to 1 when a Data Ready interrupt is generated.
 										   */
-		//los delay son impresindibles
+										   //los delay son impresindibles
 		if (mpuIntStatus & B10000) { //FIFO_OFLOW_INT
 			//Serial.println(F("\tFIFO buffer overflow interrupt "));
 			delay(1);

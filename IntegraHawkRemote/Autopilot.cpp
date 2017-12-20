@@ -19,10 +19,12 @@ void Autopilot::init()
 void Autopilot::Control(Angle ReqAngle, Angle CurrentAngle)
 {
 	int servoPosAlRgt, servoPosAlLtf, servoPosESC;
-	servoPosAlRgt = getServoPositionAlRgt(ReqAngle, CurrentAngle);
-	servoPosAlLtf = getServoPositionAlLft(ReqAngle, CurrentAngle);
-	servoMove(servoPosAlRgt, 'R');
-	servoMove(servoPosAlLtf, 'L');
+	if (!checkTransitionZone(ReqAngle, CurrentAngle)) {
+		servoPosAlRgt = getServoPositionAlRgt(ReqAngle, CurrentAngle);
+		servoPosAlLtf = getServoPositionAlLft(ReqAngle, CurrentAngle);
+		servoMove(servoPosAlRgt, 'R');
+		servoMove(servoPosAlLtf, 'L');
+	}
 	//esc provisorio para saber si anda
 	servoMove(map(ReqAngle.ESC, 1000, 2000, 0, 180), 'E');
 }
@@ -35,6 +37,7 @@ int Autopilot::getServoPositionAlRgt(Angle ReqAngle, Angle CurrentAngle)
 	servoAngX = map(angCalcX, _minX, _maxX, _minServoXDif, _maxServoXDif);
 	servoAngY = map(angCalcY, _minY, _maxY, _minServoAl, _maxServoAl);
 	servoAng = servoAngX + servoAngY;
+
 	if (servoAng > _maxServoAl)servoAng = _maxServoAl;
 	if (servoAng < _minServoAl)servoAng = _minServoAl;
 	return servoAng;
@@ -48,9 +51,23 @@ int Autopilot::getServoPositionAlLft(Angle ReqAngle, Angle CurrentAngle)
 	servoAngX = map(angCalcX, _minX, _maxX, _minServoXDif, _maxServoXDif);
 	servoAngY = map(angCalcY, _minY, _maxY, _maxServoAl, _minServoAl);
 	servoAng = servoAngX + servoAngY;
+
 	if (servoAng > _maxServoAl)servoAng = _maxServoAl;
 	if (servoAng < _minServoAl)servoAng = _minServoAl;
 	return servoAng;
+}
+bool Autopilot::checkTransitionZone(Angle ReqAngle, Angle CurrentAngle)
+{
+	if ((CurrentAngle.AngleY > 90 || CurrentAngle.AngleY < -90) && (CurrentAngle.AngleX > 90 || CurrentAngle.AngleX < -90))
+	{
+		return true;
+	}
+	////check if is full pitched
+	//if ((CurrentAngle.AngleY > 90 || CurrentAngle.AngleY < -90) && (CurrentAngle.AngleX < 90 || CurrentAngle.AngleX > -90))
+	//{
+	//	return true;
+	//}
+	return false;
 }
 void Autopilot::servoMove(int position, char ServoCoor)
 {

@@ -20,6 +20,7 @@ public:
 private:
 	int getServoPositionAlRgt(Angle ReqAngle, Angle CurrentAngle);
 	int getServoPositionAlLft(Angle ReqAngle, Angle CurrentAngle);
+	bool checkTransitionZone(Angle ReqAngle, Angle CurrentAngle);
 	void servoMove(int position, char ServoCoor);
 	//servos max min angles
 	const int _maxServoAl = 135;
