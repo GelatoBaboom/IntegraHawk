@@ -9,6 +9,7 @@ Autopilot ap;
 Angle aCurse(0, 0, 0);
 uint32_t timer;
 uint32_t pilotTimer;
+uint32_t transDelay;
 int blinkTime = 250;
 bool led = false;
 bool noPilot = false;
@@ -19,9 +20,12 @@ void setup() {
 	ant.begin(9600);
 	pinMode(13, OUTPUT);
 }
-
+Angle aReq(0, 0, 0, false);
 void loop() {
-	Angle aReq = ant.receiveData();
+	if ((micros() - transDelay) / 1000 > 50) {
+		aReq = ant.receiveData();
+		transDelay = micros();
+	}
 	if (aReq.HasAngle == true) {
 		aCurse = Angle(aReq.AngleX, aReq.AngleY, 0.0);
 		aCurse.ESC = aReq.ESC;
@@ -36,7 +40,7 @@ void loop() {
 		}
 		if (((micros() - pilotTimer) / 1000) > 10000)
 		{
-			aCurse = Angle(-15, -15, 0.0);
+			aCurse = Angle(0, -9, 0.0);
 			aCurse.ESC = 1000;
 		}
 	}

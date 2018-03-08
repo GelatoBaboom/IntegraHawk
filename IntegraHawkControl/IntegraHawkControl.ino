@@ -5,14 +5,16 @@ const int analogPinY = A1;
 const int analogPinYCorrection = A3;
 const int analogPinESC = A2;
 const int buzzPin = 9;
+const int ledPin = 13;
 
+//timer y vals
 int valueX = 0;
 int valueY = 0;
 int valueYCorr = 0;
 int valueESC = 0;
 int posCorrCurrent = 0;
-//para pruebas 
 uint32_t timer;
+bool led = false;
 //
 #include <SoftwareSerial.h>
 SoftwareSerial antSerial(2, 3);
@@ -20,6 +22,7 @@ void setup() {
 	Serial.begin(9600);
 	antSerial.begin(9600);
 	startToneAlert();
+	pinMode(ledPin, OUTPUT);
 }
 
 void loop() {
@@ -28,25 +31,24 @@ void loop() {
 	valueYCorr = analogRead(analogPinYCorrection);
 	valueESC = analogRead(analogPinESC);
 
-	/*if (((micros() - timer) / 1000) > 2000)
+	//Led Blink 
+	if (((micros() - timer) / 1000) > (led ? 750 : 100))
 	{
-		valueX = valueX > 0 ? 0 : 1023;
+		led = !led;
+		digitalWrite(13, led);
 		timer = micros();
-	}*/
-	//int actPositionx = map(valueX, 0, 1023, 45, -45);
-	//int actPositiony = map(valueY, 0, 1023, -45, 45);
-	//positionx = actPositionx;
-	//positiony = actPositiony;
-	//Angle a((double)positionx, (double)positiony, 0.0);
-	////Serial.println(a.toString());
-	//antSerial.println(a.toString());
+	}
 
 	int actPositionx = map(valueX, 0, 1023, 126, -126);
 	int actPositionycorr = map(valueYCorr, 0, 1023, -90, 90);
 	adjustToneAlert(actPositionycorr);
 
-	//Serial.println(String( actPositionycorr));
-	int actPositiony = map((valueY + actPositionycorr), 0, 1023, -126, 126);
+	//Position y and correction
+	int actPositionyAndCorrection = valueY + actPositionycorr;
+	actPositionyAndCorrection = actPositionyAndCorrection < 0 ? 0 : actPositionyAndCorrection;
+	actPositionyAndCorrection = actPositionyAndCorrection > 1023 ? 1023 : actPositionyAndCorrection;
+	int actPositiony = map(actPositionyAndCorrection, 0, 1023, -126, 126);
+	//Pos ESC
 	int actPositionESC = map(valueESC, 0, 1023, 126, -126);
 	byte buffer[5] = { (char)-127,(char)actPositionx, (char)actPositiony,(char)actPositionESC,(char)127 };
 
@@ -57,20 +59,34 @@ void loop() {
 
 void adjustToneAlert(int poscorr)
 {
-	if (posCorrCurrent != poscorr) {
-		tone(buzzPin, (poscorr < 0 ? -(poscorr) : poscorr) * 10, 80);
+	int dif = (posCorrCurrent - poscorr);
+	int diffp = (dif < 0 ? -(dif) : dif);
+	if (diffp > 3) {
+
+		int p = (poscorr < 0 ? -(poscorr) : poscorr);
+		if (p<3 && p>-3) {
+			tone(buzzPin, 440, 100);
+			delay(150);
+			tone(buzzPin, 494, 100);
+			delay(150);
+			tone(buzzPin, 440, 100);
+		}
+		else
+		{
+			tone(buzzPin, (p * 10) + 100, 80);
+		}
 		posCorrCurrent = poscorr;
 	}
 }
 
 void startToneAlert()
 {
-	tone(buzzPin, 440, 200);
+	tone(buzzPin, 440, 150);
 	delay(150);
-	tone(buzzPin, 494, 200);
+	tone(buzzPin, 494, 150);
 	delay(150);
-	tone(buzzPin, 523, 200);
+	tone(buzzPin, 523, 150);
 	delay(150);
-	tone(buzzPin, 702, 200);
-	delay(500);
+	tone(buzzPin, 528, 200);
+	delay(200);
 }
