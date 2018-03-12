@@ -40,7 +40,7 @@ void loop() {
 	}
 
 	int actPositionx = map(valueX, 0, 1023, 126, -126);
-	int actPositionycorr = map(valueYCorr, 0, 1023, -90, 90);
+	int actPositionycorr = map(valueYCorr, 0, 1023, -200, 200);
 	adjustToneAlert(actPositionycorr);
 
 	//Position y and correction

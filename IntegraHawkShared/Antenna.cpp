@@ -37,13 +37,13 @@ String Antenna::receive()
 	Serial.flush();
 	return data;
 }
+Angle a = Angle(0, 0, 0);
 Angle Antenna::receiveData()
 {
 
 	char c = '1';
 	//int pos = 1;
 	//bool takeTooLong = false;
-	Angle a = Angle(0, 0, 0);
 	a.HasAngle = false;
 	if (Serial.available() > 4) {
 		char buff[5];
@@ -59,7 +59,8 @@ Angle Antenna::receiveData()
 					datapos = 1;
 					//Serial.println("pos1: " + String((int)buff[pos]));
 				}
-			}else  if (datapos > 0 && datapos < 4)
+			}
+			else  if (datapos > 0 && datapos < 4)
 			{
 				if ((int)buff[pos] > -127 && (int)buff[pos] < 127)
 				{
@@ -67,7 +68,8 @@ Angle Antenna::receiveData()
 					datapos = datapos + 1;
 					//Serial.println("pos23: " + String((int)buff[pos]));
 				}
-			}else if (datapos > 3)
+			}
+			else if (datapos > 3)
 			{
 				if ((int)buff[pos] > 126)
 				{
@@ -83,15 +85,16 @@ Angle Antenna::receiveData()
 		//Serial.println("data: " + String((int)buff[0]) + " " + String((int)buff[1]) + " " + String((int)buff[2]) + " " + String((int)buff[3]) + " " + String((int)buff[4]));
 		if (done == true)
 		{
-			a.AngleX = map((int)data[1], -127, 127, -45, 45 );
+			a.AngleX = map((int)data[1], -127, 127, -45, 45);
 			a.AngleY = map((int)data[2], -127, 127, -45, 45);
 			a.ESC = map((int)data[3], -127, 127, 1000, 2000);
 			done = false;
 			a.HasAngle = true;
 			//clean buffer fast
 			char buff[100];
-			Serial.readBytes(buff, Serial.available());
-			
+			int buffCount = Serial.available();
+			Serial.readBytes(buff, buffCount > 100 ? 100 : buffCount);
+
 		}
 
 		//timeout = micros();
