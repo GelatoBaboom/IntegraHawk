@@ -5,7 +5,10 @@ Servo servoAlLft;
 Servo servoESC;
 int CurrentPosRgt;
 int CurrentPosLft;
+//ESC
 int CurrentPosESC;
+int minPulseRate = 1000;
+int maxPulseRate = 2000;
 Autopilot::Autopilot()
 {
 
@@ -14,7 +17,12 @@ void Autopilot::init()
 {
 	servoAlRgt.attach(9);
 	servoAlLft.attach(10);
-	servoESC.attach(11);
+	servoESC.attach(11, minPulseRate, maxPulseRate);
+	servoESC.writeMicroseconds(1000);
+	delay(3000);
+	servoESC.writeMicroseconds(1100);
+	delay(1000);
+	servoESC.writeMicroseconds(1000);
 }
 void Autopilot::Control(Angle ReqAngle, Angle CurrentAngle)
 {
@@ -26,7 +34,7 @@ void Autopilot::Control(Angle ReqAngle, Angle CurrentAngle)
 		servoMove(servoPosAlLtf, 'L');
 	}
 	//esc provisorio para saber si anda
-	servoMove(map(ReqAngle.ESC, 1000, 2000, 0, 180), 'E');
+	servoMove(ReqAngle.ESC, 'E');
 }
 int Autopilot::getServoPositionAlRgt(Angle ReqAngle, Angle CurrentAngle)
 {
@@ -92,7 +100,7 @@ void Autopilot::servoMove(int position, char ServoCoor)
 	{
 		if (position != CurrentPosESC) {
 			CurrentPosESC = position;
-			servoESC.write(position);
+			servoESC.writeMicroseconds(position);
 		}
 	}
 

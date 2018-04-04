@@ -15,8 +15,8 @@ bool led = false;
 bool noPilot = false;
 void setup() {
 	//Serial.begin(115200);
-	g.init();
 	ap.init();
+	g.init();
 	ant.begin(9600);
 	pinMode(13, OUTPUT);
 }

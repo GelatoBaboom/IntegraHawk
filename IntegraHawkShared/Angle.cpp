@@ -8,6 +8,7 @@ Angle::Angle(double x, double y, double z)
 	AngleX = x;
 	AngleY = y;
 	AngleZ = z;
+	ESC = 1000;
 	HasAngle = true;
 }
 Angle::Angle(double x, double y, double z, bool hasAngle)
@@ -15,6 +16,7 @@ Angle::Angle(double x, double y, double z, bool hasAngle)
 	AngleX = x;
 	AngleY = y;
 	AngleZ = z;
+	ESC = 1000;
 	HasAngle = hasAngle;
 }
 Angle::Angle(String xy)
