@@ -51,16 +51,13 @@ Angle Antenna::receiveData()
 		Serial.readBytes(buffTotal, buffCount > 100 ? 100 : buffCount);
 		int val = 0;
 		int i = -1;
-
-		while (val != -127 && (i + 1) < buffCount) {
-			i++;
-			val = (int)buffTotal[i];
-		}
-
-		while (procede)
-		{
+		//while (procede)
+		//1{
 			procede = false;
-
+			while (val != -127 && (i + 1) < buffCount) {
+				i++;
+				val = (int)buffTotal[i];
+			}
 			if (buffCount - i > 4) {
 				char buff[5] = { buffTotal[i],buffTotal[i + 1],buffTotal[i + 2],buffTotal[i + 3],buffTotal[i + 4] };
 				int pos = 0;
@@ -117,7 +114,7 @@ Angle Antenna::receiveData()
 			else {
 				procede = false;
 			}
-		}
+		//}
 	}
 	//Serial.println("data: " + String((int)buff[0]) + " " + String((int)buff[1]) + " " + String((int)buff[2]) + " " + String((int)buff[3]) + " " + String((int)buff[4]));
 
