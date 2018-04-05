@@ -45,80 +45,82 @@ Angle Antenna::receiveData()
 	//bool takeTooLong = false;
 	a.HasAngle = false;
 	bool procede = true;
-	int val = 0;
-	char searchbuff[1];
-	while (Serial.available() > 5 && val !=-127) {
-		Serial.readBytes(searchbuff, 1);
-		val = (int)searchbuff[0];
-	}
-	while (procede)
-	{
-		procede = false;
+	char buffTotal[100];
+	int buffCount = Serial.available();
+	if (buffCount > 4) {
+		Serial.readBytes(buffTotal, buffCount > 100 ? 100 : buffCount);
+		int val = 0;
+		int i = -1;
 
-		if (Serial.available() > 4) {
-			char buff[5];
-			int pos = 0;
-			//Serial.readBytes(&buff[pos], 1);
-			Serial.readBytes(buff, 5);
-			while (pos < 5) {
-				if (datapos < 1)
-				{
-					if ((int)buff[pos] < -126)
-					{
-						data[datapos] = buff[pos];
-						datapos = 1;
-						//Serial.println("pos1: " + String((int)buff[pos]));
-					}
-				}
-				else  if (datapos > 0 && datapos < 4)
-				{
-					if ((int)buff[pos] > -127 && (int)buff[pos] < 127)
-					{
-						data[datapos] = buff[pos];
-						datapos = datapos + 1;
-						//Serial.println("pos23: " + String((int)buff[pos]));
-					}
-					else
-					{
-						datapos = 0;
-						pos = 4;
-						procede = true;
-					}
-				}
-				else if (datapos > 3)
-				{
-					if ((int)buff[pos] > 126)
-					{
-						data[datapos] = buff[pos];
-						datapos = 0;
-						done = true;
-						//Serial.println("pos4: " + String((int)buff[pos]));
-						pos = 4;
-					}
-				}
-				pos = pos + 1;
-			}
-			if (done == true)
-			{
-				a.AngleX = map((int)data[1], -127, 127, -45, 45);
-				a.AngleY = map((int)data[2], -127, 127, -45, 45);
-				a.ESC = map((int)data[3], -127, 127, 1000, 2000);
-				done = false;
-				a.HasAngle = true;
-				//clean buffer fast
-				char buff[100];
-				int buffCount = Serial.available();
-				Serial.readBytes(buff, buffCount > 100 ? 100 : buffCount);
-
-			}
-
+		while (val != -127 && (i + 1) < buffCount) {
+			i++;
+			val = (int)buffTotal[i];
 		}
-		else {
+
+		while (procede)
+		{
 			procede = false;
+
+			if (buffCount - i > 4) {
+				char buff[5] = { buffTotal[i],buffTotal[i + 1],buffTotal[i + 2],buffTotal[i + 3],buffTotal[i + 4] };
+				int pos = 0;
+				//Serial.readBytes(buff, 5);
+				while (pos < 5) {
+					if (datapos < 1)
+					{
+						if ((int)buff[pos] < -126)
+						{
+							data[datapos] = buff[pos];
+							datapos = 1;
+							//Serial.println("pos1: " + String((int)buff[pos]));
+						}
+					}
+					else  if (datapos > 0 && datapos < 4)
+					{
+						if ((int)buff[pos] > -127 && (int)buff[pos] < 127)
+						{
+							data[datapos] = buff[pos];
+							datapos = datapos + 1;
+							//Serial.println("pos23: " + String((int)buff[pos]));
+						}
+						else
+						{
+							datapos = 0;
+							pos = 4;
+							i++;
+							procede = true;
+						}
+					}
+					else if (datapos > 3)
+					{
+						if ((int)buff[pos] > 126)
+						{
+							data[datapos] = buff[pos];
+							datapos = 0;
+							done = true;
+							//Serial.println("pos4: " + String((int)buff[pos]));
+							pos = 4;
+						}
+					}
+					pos = pos + 1;
+				}
+				if (done == true)
+				{
+					a.AngleX = map((int)data[1], -127, 127, -45, 45);
+					a.AngleY = map((int)data[2], -127, 127, -45, 45);
+					a.ESC = map((int)data[3], -127, 127, 1000, 2000);
+					done = false;
+					a.HasAngle = true;
+				}
+
+			}
+			else {
+				procede = false;
+			}
 		}
 	}
 	//Serial.println("data: " + String((int)buff[0]) + " " + String((int)buff[1]) + " " + String((int)buff[2]) + " " + String((int)buff[3]) + " " + String((int)buff[4]));
-	
+
 
 	//timeout = micros();
 	//	if (((micros() - timeout) / 1000) > 50)
