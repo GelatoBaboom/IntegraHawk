@@ -50,9 +50,9 @@ void loop() {
 	int actPositiony = map(actPositionyAndCorrection, 0, 1023, -126, 126);
 	//Pos ESC
 	int actPositionESC = map(valueESC, 0, 1023, 126, -126);
-	byte buffer[5] = { (char)-127,(char)actPositionx, (char)actPositiony,(char)actPositionESC,(char)127 };
+	byte buffer[6] = { (char)-127,(char)-127,(char)actPositionx, (char)actPositiony,(char)actPositionESC,(char)127 };
 
-	antSerial.write(buffer, 5);
+	antSerial.write(buffer, 6);
 	delay(50);
 
 }
