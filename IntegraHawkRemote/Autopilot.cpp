@@ -43,7 +43,7 @@ int Autopilot::getServoPositionAlRgt(Angle ReqAngle, Angle CurrentAngle)
 	angCalcX = ReqAngle.AngleX - CurrentAngle.AngleX;
 
 	servoAngX = map(angCalcX, _minX, _maxX, _minServoXDif, _maxServoXDif);
-	servoAngY = map(angCalcY, _minY, _maxY, _minServoAl, _maxServoAl);
+	servoAngY = map(angCalcY, _minY, _maxY, _maxServoAl, _minServoAl);
 	servoAng = servoAngX + servoAngY;
 
 	if (servoAng > _maxServoAl)servoAng = _maxServoAl;
@@ -57,7 +57,7 @@ int Autopilot::getServoPositionAlLft(Angle ReqAngle, Angle CurrentAngle)
 	angCalcY = ReqAngle.AngleY - CurrentAngle.AngleY;
 
 	servoAngX = map(angCalcX, _minX, _maxX, _minServoXDif, _maxServoXDif);
-	servoAngY = map(angCalcY, _minY, _maxY, _maxServoAl, _minServoAl);
+	servoAngY = map(angCalcY, _minY, _maxY, _minServoAl, _maxServoAl);
 	servoAng = servoAngX + servoAngY;
 
 	if (servoAng > _maxServoAl)servoAng = _maxServoAl;

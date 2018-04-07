@@ -118,6 +118,7 @@ Angle Giro::GetAngles()
 		if (mpuIntStatus & B10000) { //FIFO_OFLOW_INT
 			//Serial.println(F("\tFIFO buffer overflow interrupt "));
 			delay(1);
+			
 		}
 		if (mpuIntStatus & B1000) { //I2C_MST_INT
 			//Serial.println(F("\tSlave I2c Device Status Int "));
@@ -147,6 +148,7 @@ Angle Giro::GetAngles()
 		AngZ = (ypr[0] * 180.0 / M_PI);
 		//AngZ = map(AngZ, -180, 180, 0, 360);
 		hasAngle = true;
+		digitalWrite(13, HIGH);
 		if (fifoCount > 0) mpu.resetFIFO(); // clean up any leftovers Should never happen! but lets start fresh if we need to. this should never happen.
 	}
 	return Angle(AngX, AngY, AngZ, hasAngle);

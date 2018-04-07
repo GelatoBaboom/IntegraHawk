@@ -38,22 +38,23 @@ void loop() {
 			noPilot = true;
 			pilotTimer = micros();
 		}
-		if (((micros() - pilotTimer) / 1000) > 10000)
+		if (((micros() - pilotTimer) / 1000) > 5000)
 		{
 			aCurse = Angle(0, -9, 0.0);
 			aCurse.ESC = 1000;
 		}
 	}
 
-	Angle ang = g.GetAnglesSecure();
-	ap.Control(aCurse, ang);
+	Angle ang = g.GetAngles();
+	if (ang.HasAngle == true)
+		ap.Control(aCurse, ang);
 	//Led Blink 
 	if (aReq.HasAngle == true) { blinkTime = led ? 50 : 500; }
 	else { blinkTime = 600; }
-	if (((micros() - timer) / 1000) > blinkTime)
+	if (((micros() - timer) / 500) > blinkTime)
 	{
 		led = !led;
-		digitalWrite(13, led);
+		digitalWrite(13, LOW);
 		timer = micros();
 	}
 
