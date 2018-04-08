@@ -10,8 +10,6 @@ Angle aCurse(0, 0, 0);
 uint32_t timer;
 uint32_t pilotTimer;
 uint32_t transDelay;
-int blinkTime = 250;
-bool led = false;
 bool noPilot = false;
 void setup() {
 	//Serial.begin(115200);
@@ -40,20 +38,19 @@ void loop() {
 		}
 		if (((micros() - pilotTimer) / 1000) > 5000)
 		{
-			aCurse = Angle(0, -9, 0.0);
+			aCurse = Angle(0, 0, 0.0);
 			aCurse.ESC = 1000;
 		}
 	}
 
 	Angle ang = g.GetAngles();
-	if (ang.HasAngle == true)
+	if (ang.HasAngle == true) {
 		ap.Control(aCurse, ang);
+		digitalWrite(13, HIGH);
+	}
 	//Led Blink 
-	if (aReq.HasAngle == true) { blinkTime = led ? 50 : 500; }
-	else { blinkTime = 600; }
-	if (((micros() - timer) / 500) > blinkTime)
+	if (((micros() - timer) / 500) > 250)
 	{
-		led = !led;
 		digitalWrite(13, LOW);
 		timer = micros();
 	}
