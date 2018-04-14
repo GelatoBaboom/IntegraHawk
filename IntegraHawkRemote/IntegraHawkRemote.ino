@@ -10,7 +10,6 @@ Angle aCurse(0, 0, 0);
 uint32_t timer;
 uint32_t pilotTimer;
 uint32_t transDelay;
-bool noPilot = false;
 void setup() {
 	//Serial.begin(115200);
 	ap.init();
@@ -27,18 +26,18 @@ void loop() {
 	if (aReq.HasAngle == true) {
 		aCurse = Angle(aReq.AngleX, aReq.AngleY, 0.0);
 		aCurse.ESC = aReq.ESC;
-		noPilot = false;
 		pilotTimer = micros();
 	}
 	else {
-
-		if (noPilot == false) {
-			noPilot = true;
-			pilotTimer = micros();
-		}
-		if (((micros() - pilotTimer) / 1000) > 1000)
+		int timeout = ((micros() - pilotTimer) / 1000);
+		if (timeout > 1000 && timeout<3000)
 		{
 			aCurse = Angle(0, 0, 0.0);
+			aCurse.ESC = 1000;
+		}
+		if (timeout > 3000)
+		{
+			aCurse = Angle(-4, 4, 0.0);
 			aCurse.ESC = 1000;
 		}
 	}

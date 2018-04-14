@@ -30,12 +30,20 @@ void Autopilot::Control(Angle ReqAngle, Angle CurrentAngle)
 	if (!checkTransitionZone(ReqAngle, CurrentAngle)) {
 		servoPosAlRgt = getServoPositionAlRgt(ReqAngle, CurrentAngle);
 		servoPosAlLtf = getServoPositionAlLft(ReqAngle, CurrentAngle);
-		servoMove(servoPosAlRgt, 'R');
-		servoMove(servoPosAlLtf, 'L');
 	}
+	else
+	{
+		servoPosAlRgt = getManualServoPositionAlRgt(ReqAngle);
+		servoPosAlLtf = getManualServoPositionAlLft(ReqAngle);
+	}
+	//Writting servo position
+	servoMove(servoPosAlRgt, 'R');
+	servoMove(servoPosAlLtf, 'L');
+
 	//esc provisorio para saber si anda
 	servoMove(ReqAngle.ESC, 'E');
 }
+//Automanaged servo position
 int Autopilot::getServoPositionAlRgt(Angle ReqAngle, Angle CurrentAngle)
 {
 	int angCalcX, angCalcY, servoAng, servoAngX, servoAngY;
@@ -64,6 +72,36 @@ int Autopilot::getServoPositionAlLft(Angle ReqAngle, Angle CurrentAngle)
 	if (servoAng < _minServoAl)servoAng = _minServoAl;
 	return servoAng;
 }
+//Manual servo position
+int Autopilot::getManualServoPositionAlRgt(Angle ReqAngle)
+{
+	int angCalcX, angCalcY, servoAng, servoAngX, servoAngY;
+	angCalcY = ReqAngle.AngleY ;
+	angCalcX = ReqAngle.AngleX ;
+
+	servoAngX = map(angCalcX, _minX, _maxX, _minServoXDif, _maxServoXDif);
+	servoAngY = map(angCalcY, _minY, _maxY, _maxServoAl, _minServoAl);
+	servoAng = servoAngX + servoAngY;
+
+	if (servoAng > _maxServoAl)servoAng = _maxServoAl;
+	if (servoAng < _minServoAl)servoAng = _minServoAl;
+	return servoAng;
+}
+int Autopilot::getManualServoPositionAlLft(Angle ReqAngle)
+{
+	int angCalcX, angCalcY, servoAng, servoAngX, servoAngY;
+	angCalcX = ReqAngle.AngleX;
+	angCalcY = ReqAngle.AngleY;
+
+	servoAngX = map(angCalcX, _minX, _maxX, _minServoXDif, _maxServoXDif);
+	servoAngY = map(angCalcY, _minY, _maxY, _minServoAl, _maxServoAl);
+	servoAng = servoAngX + servoAngY;
+
+	if (servoAng > _maxServoAl)servoAng = _maxServoAl;
+	if (servoAng < _minServoAl)servoAng = _minServoAl;
+	return servoAng;
+}
+//checking angs & writing position
 bool Autopilot::checkTransitionZone(Angle ReqAngle, Angle CurrentAngle)
 {
 	if ((CurrentAngle.AngleY > 90 || CurrentAngle.AngleY < -90) && (CurrentAngle.AngleX > 90 || CurrentAngle.AngleX < -90))
@@ -83,7 +121,6 @@ void Autopilot::servoMove(int position, char ServoCoor)
 	{
 		int pos = position + _trimServoRgt;
 		if (pos != CurrentPosRgt) {
-			//Serial.println("Pos: " + String(CurrentPosX));
 			CurrentPosRgt = pos;
 			servoAlRgt.write(pos);
 		}
