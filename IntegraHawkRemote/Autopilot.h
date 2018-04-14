@@ -31,6 +31,8 @@ private:
 	const int _minServoXDif = -30;
 	const int _maxServoESC = 1000;
 	const int _minServoESC = 2000;
+	//coreccion por giro max 
+	const int _maxAngCorrY = 15;
 	//plane angles max min in degrees
 	//max min pitch(Y)
 	const int _minY = -35;

@@ -17,7 +17,7 @@ void Autopilot::init()
 {
 	servoAlRgt.attach(9);
 	servoAlLft.attach(10);
-	servoESC.attach(11, minPulseRate, maxPulseRate);
+	servoESC.attach(6, minPulseRate, maxPulseRate);
 	servoESC.writeMicroseconds(1000);
 	delay(3000);
 	servoESC.writeMicroseconds(1100);
@@ -47,8 +47,13 @@ void Autopilot::Control(Angle ReqAngle, Angle CurrentAngle)
 int Autopilot::getServoPositionAlRgt(Angle ReqAngle, Angle CurrentAngle)
 {
 	int angCalcX, angCalcY, servoAng, servoAngX, servoAngY;
-	angCalcY = ReqAngle.AngleY - CurrentAngle.AngleY;
+	//correccion por giro
+	int corrY = map(fabs(ReqAngle.AngleX), _minX, _maxX, 0, _maxAngCorrY);
+	//end corr
+
+	//calculo de angulos
 	angCalcX = ReqAngle.AngleX - CurrentAngle.AngleX;
+	angCalcY = ReqAngle.AngleY - CurrentAngle.AngleY;
 
 	servoAngX = map(angCalcX, _minX, _maxX, _minServoXDif, _maxServoXDif);
 	servoAngY = map(angCalcY, _minY, _maxY, _maxServoAl, _minServoAl);
@@ -61,8 +66,15 @@ int Autopilot::getServoPositionAlRgt(Angle ReqAngle, Angle CurrentAngle)
 int Autopilot::getServoPositionAlLft(Angle ReqAngle, Angle CurrentAngle)
 {
 	int angCalcX, angCalcY, servoAng, servoAngX, servoAngY;
+	//correccion por giro
+	int corrY = map(fabs(ReqAngle.AngleX), _minX, _maxX, 0, _maxAngCorrY);
+	//end corr
+
+	//calculo de angulos
 	angCalcX = ReqAngle.AngleX - CurrentAngle.AngleX;
-	angCalcY = ReqAngle.AngleY - CurrentAngle.AngleY;
+	angCalcY = (ReqAngle.AngleY + corrY) - CurrentAngle.AngleY;
+
+
 
 	servoAngX = map(angCalcX, _minX, _maxX, _minServoXDif, _maxServoXDif);
 	servoAngY = map(angCalcY, _minY, _maxY, _minServoAl, _maxServoAl);
@@ -76,8 +88,8 @@ int Autopilot::getServoPositionAlLft(Angle ReqAngle, Angle CurrentAngle)
 int Autopilot::getManualServoPositionAlRgt(Angle ReqAngle)
 {
 	int angCalcX, angCalcY, servoAng, servoAngX, servoAngY;
-	angCalcY = ReqAngle.AngleY ;
-	angCalcX = ReqAngle.AngleX ;
+	angCalcY = ReqAngle.AngleY;
+	angCalcX = ReqAngle.AngleX;
 
 	servoAngX = map(angCalcX, _minX, _maxX, _minServoXDif, _maxServoXDif);
 	servoAngY = map(angCalcY, _minY, _maxY, _maxServoAl, _minServoAl);
