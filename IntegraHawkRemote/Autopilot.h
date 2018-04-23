@@ -32,7 +32,7 @@ private:
 	const int _maxServoESC = 1000;
 	const int _minServoESC = 2000;
 	//coreccion por giro max 
-	const int _maxAngCorrY = 15;
+	const int _maxAngCorrY = 10;
 	//plane angles max min in degrees
 	//max min pitch(Y)
 	const int _minY = -35;
@@ -42,7 +42,7 @@ private:
 	const int _maxX = 35;
 	//trim adjust
 	//+ (val>0) ail down
-	const int _trimServoRgt = -1;
+	const int _trimServoRgt = -7;
 	//+ (val>0) ail up
 	const int _trimServoLft = 2;
 };

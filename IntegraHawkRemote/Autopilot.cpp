@@ -48,7 +48,7 @@ int Autopilot::getServoPositionAlRgt(Angle ReqAngle, Angle CurrentAngle)
 {
 	int angCalcX, angCalcY, servoAng, servoAngX, servoAngY;
 	//correccion por giro
-	int corrY = map(fabs(ReqAngle.AngleX), _minX, _maxX, 0, _maxAngCorrY);
+	int corrY = map(fabs(ReqAngle.AngleX), 0, _maxX, 0, _maxAngCorrY);
 	//end corr
 
 	//calculo de angulos
@@ -67,7 +67,7 @@ int Autopilot::getServoPositionAlLft(Angle ReqAngle, Angle CurrentAngle)
 {
 	int angCalcX, angCalcY, servoAng, servoAngX, servoAngY;
 	//correccion por giro
-	int corrY = map(fabs(ReqAngle.AngleX), _minX, _maxX, 0, _maxAngCorrY);
+	int corrY = map(fabs(ReqAngle.AngleX), 0, _maxX, 0, _maxAngCorrY);
 	//end corr
 
 	//calculo de angulos
