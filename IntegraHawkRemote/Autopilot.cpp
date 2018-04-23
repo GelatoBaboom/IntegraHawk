@@ -53,7 +53,7 @@ int Autopilot::getServoPositionAlRgt(Angle ReqAngle, Angle CurrentAngle)
 
 	//calculo de angulos
 	angCalcX = ReqAngle.AngleX - CurrentAngle.AngleX;
-	angCalcY = ReqAngle.AngleY - CurrentAngle.AngleY;
+	angCalcY = (ReqAngle.AngleY + corrY) - CurrentAngle.AngleY;
 
 	servoAngX = map(angCalcX, _minX, _maxX, _minServoXDif, _maxServoXDif);
 	servoAngY = map(angCalcY, _minY, _maxY, _maxServoAl, _minServoAl);
