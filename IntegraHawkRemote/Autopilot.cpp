@@ -39,8 +39,7 @@ void Autopilot::Control(Angle ReqAngle, Angle CurrentAngle)
 	//Writting servo position
 	servoMove(servoPosAlRgt, 'R');
 	servoMove(servoPosAlLtf, 'L');
-
-	//esc provisorio para saber si anda
+	//esc 
 	servoMove(ReqAngle.ESC, 'E');
 }
 //Automanaged servo position
@@ -61,6 +60,8 @@ int Autopilot::getServoPositionAlRgt(Angle ReqAngle, Angle CurrentAngle)
 
 	if (servoAng > _maxServoAl)servoAng = _maxServoAl;
 	if (servoAng < _minServoAl)servoAng = _minServoAl;
+	//ajuste por velocidad
+	//servoAng = ReqAngle.ESC > 1500 ? ((map(ReqAngle.ESC, 1400, 2000, 100, 70 ) * servoAng)/100) : servoAng;
 	return servoAng;
 }
 int Autopilot::getServoPositionAlLft(Angle ReqAngle, Angle CurrentAngle)
@@ -74,14 +75,14 @@ int Autopilot::getServoPositionAlLft(Angle ReqAngle, Angle CurrentAngle)
 	angCalcX = ReqAngle.AngleX - CurrentAngle.AngleX;
 	angCalcY = (ReqAngle.AngleY + corrY) - CurrentAngle.AngleY;
 
-
-
 	servoAngX = map(angCalcX, _minX, _maxX, _minServoXDif, _maxServoXDif);
 	servoAngY = map(angCalcY, _minY, _maxY, _minServoAl, _maxServoAl);
 	servoAng = servoAngX + servoAngY;
 
 	if (servoAng > _maxServoAl)servoAng = _maxServoAl;
 	if (servoAng < _minServoAl)servoAng = _minServoAl;
+	//ajuste por velocidad
+	//servoAng = ReqAngle.ESC > 1500 ? ((map(ReqAngle.ESC, 1400, 2000, 100, 130) * servoAng) / 100) : servoAng;
 	return servoAng;
 }
 //Manual servo position
