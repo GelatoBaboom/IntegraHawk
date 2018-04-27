@@ -26,6 +26,8 @@ void loop() {
 	if (aReq.HasAngle == true) {
 		aCurse = Angle(aReq.AngleX, aReq.AngleY, 0.0);
 		aCurse.ESC = aReq.ESC;
+		aCurse.Autopilot = aReq.Autopilot;
+
 		pilotTimer = micros();
 	}
 	else {

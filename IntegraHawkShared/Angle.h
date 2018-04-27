@@ -20,6 +20,7 @@ public:
 	double AngleY;
 	double AngleZ;
 	double ESC;
+	bool Autopilot;
 	bool HasAngle;
 	String toString();
 private:

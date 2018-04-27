@@ -10,6 +10,7 @@ Angle::Angle(double x, double y, double z)
 	AngleZ = z;
 	ESC = 1000;
 	HasAngle = true;
+	Autopilot = true;
 }
 Angle::Angle(double x, double y, double z, bool hasAngle)
 {
@@ -18,6 +19,7 @@ Angle::Angle(double x, double y, double z, bool hasAngle)
 	AngleZ = z;
 	ESC = 1000;
 	HasAngle = hasAngle;
+	Autopilot = true;
 }
 Angle::Angle(String xy)
 {

@@ -6,6 +6,7 @@ const int analogPinYCorrection = A3;
 const int analogPinESC = A2;
 const int buzzPin = 9;
 const int ledPin = 13;
+const int autopilotpin = 7;
 
 //timer y vals
 int valueX = 0;
@@ -15,6 +16,7 @@ int valueESC = 0;
 int posCorrCurrent = 0;
 uint32_t timer;
 bool led = false;
+int autopilotstate = 0;
 //
 #include <SoftwareSerial.h>
 SoftwareSerial antSerial(2, 3);
@@ -30,9 +32,14 @@ void loop() {
 	valueY = analogRead(analogPinY);
 	valueYCorr = analogRead(analogPinYCorrection);
 	valueESC = analogRead(analogPinESC);
+	if (autopilotstate != digitalRead(autopilotpin))
+	{
+		autopilotTone();
+	}
+	autopilotstate = digitalRead(autopilotpin);
 
 	//Led Blink 
-	if (((micros() - timer) / 1000) > (led ? 750 : 100))
+	if (((micros() - timer) / 1000) > (led ? 250 : 50))
 	{
 		led = !led;
 		digitalWrite(13, led);
@@ -50,7 +57,7 @@ void loop() {
 	int actPositiony = map(actPositionyAndCorrection, 0, 1023, -126, 126);
 	//Pos ESC
 	int actPositionESC = map(valueESC, 0, 1023, 126, -126);
-	byte buffer[5] = {  (char)-127,(char)actPositionx, (char)actPositiony,(char)actPositionESC,(char)127 };
+	byte buffer[6] = { (char)-127,(char)actPositionx, (char)actPositiony,(char)actPositionESC,autopilotstate == HIGH ? (char)-126 : (char)126,(char)127 };
 
 	antSerial.write(buffer, 6);
 	delay(50);
@@ -82,11 +89,27 @@ void adjustToneAlert(int poscorr)
 void startToneAlert()
 {
 	tone(buzzPin, 440, 150);
-	delay(150);
+	delay(155);
 	tone(buzzPin, 494, 150);
-	delay(150);
+	delay(155);
 	tone(buzzPin, 523, 150);
-	delay(150);
+	delay(155);
 	tone(buzzPin, 528, 200);
-	delay(200);
+	delay(300);
+}
+void autopilotTone()
+{
+	if (autopilotstate == HIGH) {
+		tone(buzzPin, 440, 200);
+		delay(200);
+		tone(buzzPin, 528, 200);
+		delay(200);
+	}
+	else
+	{
+		tone(buzzPin, 528, 200);
+		delay(200);
+		tone(buzzPin, 440, 200);
+		delay(200);
+	}
 }

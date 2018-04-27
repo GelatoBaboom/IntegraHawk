@@ -1,4 +1,5 @@
 #include "Autopilot.h"
+#include "Antenna.h"
 #include <Servo.h>
 Servo servoAlRgt;
 Servo servoAlLft;
@@ -27,14 +28,15 @@ void Autopilot::init()
 void Autopilot::Control(Angle ReqAngle, Angle CurrentAngle)
 {
 	int servoPosAlRgt, servoPosAlLtf, servoPosESC;
-	if (!checkTransitionZone(ReqAngle, CurrentAngle)) {
-		servoPosAlRgt = getServoPositionAlRgt(ReqAngle, CurrentAngle);
-		servoPosAlLtf = getServoPositionAlLft(ReqAngle, CurrentAngle);
+	if (checkTransitionZone(ReqAngle, CurrentAngle) || ReqAngle.Autopilot == false) {
+		servoPosAlRgt = getManualServoPositionAlRgt(ReqAngle);
+		servoPosAlLtf = getManualServoPositionAlLft(ReqAngle);
 	}
 	else
 	{
-		servoPosAlRgt = getManualServoPositionAlRgt(ReqAngle);
-		servoPosAlLtf = getManualServoPositionAlLft(ReqAngle);
+		servoPosAlRgt = getServoPositionAlRgt(ReqAngle, CurrentAngle);
+		servoPosAlLtf = getServoPositionAlLft(ReqAngle, CurrentAngle);
+
 	}
 	//Writting servo position
 	servoMove(servoPosAlRgt, 'R');
