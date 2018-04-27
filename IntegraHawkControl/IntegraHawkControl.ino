@@ -23,8 +23,8 @@ SoftwareSerial antSerial(2, 3);
 void setup() {
 	Serial.begin(9600);
 	antSerial.begin(9600);
-	startToneAlert();
 	pinMode(ledPin, OUTPUT);
+	startToneAlert();
 }
 
 void loop() {
@@ -95,7 +95,7 @@ void startToneAlert()
 	tone(buzzPin, 523, 150);
 	delay(155);
 	tone(buzzPin, 528, 200);
-	delay(300);
+	delay(800);
 }
 void autopilotTone()
 {

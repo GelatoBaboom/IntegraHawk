@@ -13,8 +13,8 @@
         <Source>23	void setup() {
 24		Serial.begin(9600);
 25		antSerial.begin(9600);
-26		startToneAlert();
-27		pinMode(ledPin, OUTPUT);
+26		pinMode(ledPin, OUTPUT);
+27		startToneAlert();
 28	}
 29	
 --&gt;30	void loop() {
