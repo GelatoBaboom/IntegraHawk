@@ -36,11 +36,13 @@ void loop() {
 		{
 			aCurse = Angle(0, 0, 0.0);
 			aCurse.ESC = 1000;
+			aCurse.Autopilot = true;
 		}
 		if (timeout > 3000)
 		{
 			aCurse = Angle(-4, 4, 0.0);
 			aCurse.ESC = 1000;
+			aCurse.Autopilot = true;
 		}
 	}
 
