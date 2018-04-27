@@ -34,9 +34,9 @@ void loop() {
 	valueESC = analogRead(analogPinESC);
 	if (autopilotstate != digitalRead(autopilotpin))
 	{
+		autopilotstate = digitalRead(autopilotpin);
 		autopilotTone();
 	}
-	autopilotstate = digitalRead(autopilotpin);
 
 	//Led Blink 
 	if (((micros() - timer) / 1000) > (led ? 250 : 50))
@@ -60,7 +60,7 @@ void loop() {
 	byte buffer[6] = { (char)-127,(char)actPositionx, (char)actPositiony,(char)actPositionESC,autopilotstate == HIGH ? (char)-126 : (char)126,(char)127 };
 
 	antSerial.write(buffer, 6);
-	delay(50);
+	delay(10);
 
 }
 
@@ -99,7 +99,7 @@ void startToneAlert()
 }
 void autopilotTone()
 {
-	if (autopilotstate == HIGH) {
+	if (autopilotstate == LOW) {
 		tone(buzzPin, 440, 200);
 		delay(200);
 		tone(buzzPin, 528, 200);
