@@ -32,7 +32,7 @@ void loop() {
 	}
 	else {
 		int timeout = ((micros() - pilotTimer) / 1000);
-		if (timeout > 1000 && timeout<3000)
+		if (timeout > 1000 && timeout < 3000)
 		{
 			aCurse = Angle(0, 0, 0.0);
 			aCurse.ESC = 1000;
@@ -49,7 +49,8 @@ void loop() {
 	Angle ang = g.GetAngles();
 	if (ang.HasAngle == true) {
 		ap.Control(aCurse, ang);
-		digitalWrite(13, HIGH);
+		if (ang.AngleY <1 && ang.AngleY>-1)
+			digitalWrite(13, HIGH);
 	}
 	//Led Blink 
 	if (((micros() - timer) / 500) > 250)
