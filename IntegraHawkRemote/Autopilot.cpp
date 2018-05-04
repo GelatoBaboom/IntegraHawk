@@ -28,7 +28,8 @@ void Autopilot::init()
 void Autopilot::Control(Angle ReqAngle, Angle CurrentAngle)
 {
 	int servoPosAlRgt, servoPosAlLtf, servoPosESC;
-	if (checkTransitionZone(ReqAngle, CurrentAngle) || ReqAngle.Autopilot == false) {
+	//if (checkTransitionZone(ReqAngle, CurrentAngle) || ReqAngle.Autopilot == false) {
+	if (checkTransitionZone(ReqAngle, CurrentAngle) ) {
 		servoPosAlRgt = getManualServoPositionAlRgt(ReqAngle);
 		servoPosAlLtf = getManualServoPositionAlLft(ReqAngle);
 	}
@@ -57,10 +58,7 @@ int Autopilot::getServoPositionAlRgt(Angle ReqAngle, Angle CurrentAngle)
 	angCalcY = (ReqAngle.AngleY + corrY) - CurrentAngle.AngleY;
 
 	servoAngX = map(angCalcX, _minX, _maxX, _minServoXDif, _maxServoXDif);
-	double hist = (1.0 - sqrt((((double)map(fabs(angCalcY), 0, _maxY, 0, 10)) / 10.0))) + 1.0;
-	hist = hist > 1.999 ? 1.999 : hist;
-	hist = hist < 0.001 ? 0.001 : hist;
-	servoAngY = map((angCalcY * hist), _minY, _maxY, _maxServoAl, _minServoAl) ;
+	servoAngY = map(angCalcY, _minY, _maxY, _maxServoAl, _minServoAl);
 	servoAng = servoAngX + servoAngY;
 
 	if (servoAng > _maxServoAl)servoAng = _maxServoAl;
@@ -81,10 +79,7 @@ int Autopilot::getServoPositionAlLft(Angle ReqAngle, Angle CurrentAngle)
 	angCalcY = (ReqAngle.AngleY + corrY) - CurrentAngle.AngleY;
 
 	servoAngX = map(angCalcX, _minX, _maxX, _minServoXDif, _maxServoXDif);
-	double hist = (1.0 - sqrt((((double)map(fabs(angCalcY), 0, _maxY, 0, 10)) / 10.0))) + 1.0;
-	hist = hist > 1.999 ? 1.999 : hist;
-	hist = hist < 0.001 ? 0.001 : hist;
-	servoAngY = map((angCalcY * hist), _minY, _maxY, _minServoAl, _maxServoAl);
+	servoAngY = map(angCalcY, _minY, _maxY, _minServoAl, _maxServoAl);
 	servoAng = servoAngX + servoAngY;
 
 	if (servoAng > _maxServoAl)servoAng = _maxServoAl;
