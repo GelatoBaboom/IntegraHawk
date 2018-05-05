@@ -25,8 +25,8 @@ private:
 	bool checkTransitionZone(Angle ReqAngle, Angle CurrentAngle);
 	void servoMove(int position, char ServoCoor);
 	//servos max min angles
-	const int _maxServoAl = 140;
-	const int _minServoAl = 40;
+	const int _maxServoAl = 120;
+	const int _minServoAl = 60;
 	const int _maxServoXDif = 30;
 	const int _minServoXDif = -30;
 	const int _maxServoESC = 1000;

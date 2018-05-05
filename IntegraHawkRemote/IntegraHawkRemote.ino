@@ -16,6 +16,8 @@ int buzzPin = 11;
 uint32_t cruiserTimer;
 double lastCourseZ = 0.0;
 double correctionCourseY = 0.0;
+bool cruiseDefined = false;
+
 void setup() {
 	//Serial.begin(115200);
 	ap.init();
@@ -58,43 +60,54 @@ void loop() {
 		//CruiseControl
 		if (aCurse.Autopilot == false)
 		{
-			if (lastCourseZ == 0.0)lastCourseZ = ang.AngleZ;
+			if (cruiseDefined == false)
+			{
+				lastCourseZ = ang.AngleZ;
+				cruiseDefined = true;
+			}
 
 			double retCourse = (lastCourseZ > 0) ? lastCourseZ - 180 : lastCourseZ + 180;
 
 			double diff = retCourse - ang.AngleZ;
-			double x = fabs(diff < 10 && diff > -10) ? 0.0 : 20.0;
-			double y = fabs(diff < 10 && diff > -10) ? 0.0 : 5.0;
-			if (y == 0.0)
+			double x = 20.0;
+			double y = 7.0;
+			bool endRet = false;
+			if (diff < 10 && diff > -10)
+			{
+				x = 0.0;
+				y = 0.0;
+				endRet = true;
+			}
+			if (endRet)
 			{
 				if (((micros() - cruiserTimer) / 1000) > 500)
 				{
 					cruiserTimer = micros();
 					double courseY = y + ang.AngleY;
-					correctionCourseY = ((courseY == 0.0) ? correctionCourseY : (courseY < 0) ? correctionCourseY + 1 : correctionCourseY - 1);
-					y = y + correctionCourseY;
+					correctionCourseY = ((courseY< 0.2 && courseY> -0.2) ? correctionCourseY : (courseY < 0.0) ? correctionCourseY + 3.0 : correctionCourseY - 3.0);
 				}
+				y = y + correctionCourseY;
 			}
 			if (ang.AngleZ < lastCourseZ && ang.AngleZ  > retCourse) {
 				aCurse = Angle(x, y, 0.0);
-				aCurse.ESC = 1500;
-				aCurse.Autopilot = true;
+				aCurse.ESC = 1450;
 			}
 			else
 			{
 				aCurse = Angle(-x, y, 0.0);
-				aCurse.ESC = 1500;
-				aCurse.Autopilot = true;
+				aCurse.ESC = 1450;
 			}
+		}
+		else {
+			cruiseDefined = false;
 		}
 		//end CruiseControl
 		ap.Control(aCurse, ang);
-		if (ang.AngleY <1 && ang.AngleY>-1)
+		if (ang.AngleY <1 && ang.AngleY>-1) {
 			digitalWrite(ledPin, HIGH);
+		}
 	}
-	else {
-		lastCourseZ = 0.0;
-	}
+
 
 	//Led Blink 
 	if (((micros() - timer) / 1000) > 500)
