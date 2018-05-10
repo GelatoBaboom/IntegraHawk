@@ -62,15 +62,15 @@ void loop() {
 		{
 			if (cruiseDefined == false)
 			{
-				lastCourseZ = ang.AngleZ;
+				lastCourseZ = (ang.AngleZ > 0) ? lastCourseZ + 10 : lastCourseZ - 10;;
 				cruiseDefined = true;
 			}
 
-			double retCourse = (lastCourseZ > 0) ? lastCourseZ - 180 : lastCourseZ + 180;
+			double retCourse = (lastCourseZ > 0) ? lastCourseZ - 190 : lastCourseZ + 190;
 
 			double diff = retCourse - ang.AngleZ;
-			double x = 20.0;
-			double y = 7.0;
+			double x = 15.0;
+			double y = 12.0;
 			bool endRet = false;
 			if (diff < 10 && diff > -10)
 			{
@@ -84,18 +84,18 @@ void loop() {
 				{
 					cruiserTimer = micros();
 					double courseY = y + ang.AngleY;
-					correctionCourseY = ((courseY< 0.2 && courseY> -0.2) ? correctionCourseY : (courseY < 0.0) ? correctionCourseY + 3.0 : correctionCourseY - 3.0);
+					correctionCourseY = ((courseY< 0.2 && courseY> -0.2) ? correctionCourseY : (courseY < 0.0) ? correctionCourseY + 2.0 : correctionCourseY - 2.0);
 				}
 				y = y + correctionCourseY;
 			}
 			if (ang.AngleZ < lastCourseZ && ang.AngleZ  > retCourse) {
 				aCurse = Angle(x, y, 0.0);
-				aCurse.ESC = 1450;
+				aCurse.ESC = 1400;
 			}
 			else
 			{
 				aCurse = Angle(-x, y, 0.0);
-				aCurse.ESC = 1450;
+				aCurse.ESC = 1400;
 			}
 		}
 		else {
