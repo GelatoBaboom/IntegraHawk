@@ -17,6 +17,7 @@ uint32_t cruiserTimer;
 double lastCourseZ = 0.0;
 double correctionCourseY = 0.0;
 bool cruiseDefined = false;
+bool led = false;
 
 void setup() {
 	//Serial.begin(115200);
@@ -62,10 +63,9 @@ void loop() {
 		{
 			if (cruiseDefined == false)
 			{
-				lastCourseZ = (ang.AngleZ > 0) ? lastCourseZ + 10 : lastCourseZ - 10;;
+				lastCourseZ = (ang.AngleZ > 0) ? ang.AngleZ + 10.0 : ang.AngleZ - 10.0;
 				cruiseDefined = true;
 			}
-
 			double retCourse = (lastCourseZ > 0) ? lastCourseZ - 190 : lastCourseZ + 190;
 
 			double diff = retCourse - ang.AngleZ;
@@ -84,37 +84,48 @@ void loop() {
 				{
 					cruiserTimer = micros();
 					double courseY = y + ang.AngleY;
-					correctionCourseY = ((courseY< 0.2 && courseY> -0.2) ? correctionCourseY : (courseY < 0.0) ? correctionCourseY + 2.0 : correctionCourseY - 2.0);
+					correctionCourseY = ((courseY< 0.5 && courseY> -0.5) ? correctionCourseY : (courseY < 0.0) ? correctionCourseY + 1.0 : correctionCourseY - 1.0);
 				}
 				y = y + correctionCourseY;
 			}
-			if (ang.AngleZ < lastCourseZ && ang.AngleZ  > retCourse) {
-				aCurse = Angle(x, y, 0.0);
-				aCurse.ESC = 1400;
+			if (lastCourseZ > 0)
+			{
+				if (ang.AngleZ < lastCourseZ && ang.AngleZ>retCourse) {
+					aCurse = Angle(x, y, 0.0);
+				}
+				else
+				{
+					aCurse = Angle(-x, y, 0.0);
+				}
 			}
 			else
 			{
-				aCurse = Angle(-x, y, 0.0);
-				aCurse.ESC = 1400;
+				if (ang.AngleZ > lastCourseZ && ang.AngleZ < retCourse) {
+					aCurse = Angle(-x, y, 0.0);
+				}
+				else
+				{
+					aCurse = Angle( x, y, 0.0);
+				}
 			}
+			aCurse.ESC = 1400;
+
 		}
 		else {
 			cruiseDefined = false;
 		}
 		//end CruiseControl
 		ap.Control(aCurse, ang);
-		if (ang.AngleY <1 && ang.AngleY>-1) {
-			digitalWrite(ledPin, HIGH);
-		}
 	}
 
 
 	//Led Blink 
-	if (((micros() - timer) / 1000) > 500)
+	if (((micros() - timer) / 1000) > (led ? 500 : 250))
 	{
-		digitalWrite(ledPin, LOW);
+		led = !led;
+		digitalWrite(ledPin, led);
 		timer = micros();
-		if (aReq.HasAngle == false) {
+		if (aReq.HasAngle == false && led) {
 			tone(buzzPin, 528, 250);
 		}
 	}
