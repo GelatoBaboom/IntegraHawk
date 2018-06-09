@@ -28,8 +28,8 @@ void Autopilot::init()
 void Autopilot::Control(Angle ReqAngle, Angle CurrentAngle)
 {
 	int servoPosAlRgt, servoPosAlLtf, servoPosESC;
-	//if (checkTransitionZone(ReqAngle, CurrentAngle) || ReqAngle.Autopilot == false) {
-	if (checkTransitionZone(ReqAngle, CurrentAngle) ) {
+	if (checkTransitionZone(ReqAngle, CurrentAngle) || ReqAngle.Autopilot == false) {
+	//if (checkTransitionZone(ReqAngle, CurrentAngle) ) {
 		servoPosAlRgt = getManualServoPositionAlRgt(ReqAngle);
 		servoPosAlLtf = getManualServoPositionAlLft(ReqAngle);
 	}
