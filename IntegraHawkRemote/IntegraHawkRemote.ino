@@ -12,11 +12,7 @@ uint32_t pilotTimer;
 uint32_t transDelay;
 int ledPin = 13;
 int buzzPin = 11;
-
-uint32_t cruiserTimer;
-double lastCourseZ = 0.0;
-double correctionCourseY = 0.0;
-bool cruiseDefined = false;
+bool led = false;
 
 void setup() {
 	//Serial.begin(115200);
@@ -54,12 +50,16 @@ void loop() {
 		}
 
 	}
-
+	//Control
 	Angle ang = g.GetAngles();
+	if (ang.HasAngle == true) {
+		ap.Control(aCurse, ang);
+	}
 	//Led Blink 
 	if (((micros() - timer) / 1000) > 500)
 	{
-		digitalWrite(ledPin, LOW);
+		led = !led;
+		digitalWrite(ledPin, led);
 		timer = micros();
 		if (aReq.HasAngle == false) {
 			tone(buzzPin, 528, 250);
