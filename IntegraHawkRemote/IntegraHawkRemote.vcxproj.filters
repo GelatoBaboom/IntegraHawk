@@ -46,6 +46,9 @@
     <ClInclude Include="MPU6050_9Axis_MotionApps41.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="CruiseControl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="giro.cpp">
@@ -58,6 +61,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="MPU6050.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CruiseControl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
