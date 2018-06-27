@@ -24,16 +24,17 @@ private:
 	int getManualServoPositionAlLft(Angle ReqAngle);
 	bool checkTransitionZone(Angle ReqAngle, Angle CurrentAngle);
 	void servoMove(int position, char ServoCoor);
-	//servos max min angles
+	//servos max min angles max is 180 min is 0
 	const int _maxServoAl = 120;
 	const int _minServoAl = 60;
 	const int _maxServoXDif = 30;
 	const int _minServoXDif = -30;
+	//max is 2000 min is 1000
 	const int _maxServoESC = 1000;
 	const int _minServoESC = 2000;
 	//coreccion por giro max 
 	const int _maxAngCorrY = 10;
-	//plane angles max min in degrees
+	//plane angles max min in degrees max min is +-90
 	//max min pitch(Y)
 	const int _minY = -35;
 	const int _maxY = 35;
