@@ -68,10 +68,10 @@ void adjustToneAlert(int poscorr)
 {
 	int dif = (posCorrCurrent - poscorr);
 	int diffp = (dif < 0 ? -(dif) : dif);
-	if (diffp > 3) {
+	if (diffp > 5) {
 
 		int p = (poscorr < 0 ? -(poscorr) : poscorr);
-		if (p<3 && p>-3) {
+		if (p<5 && p>-5) {
 			tone(buzzPin, 440, 100);
 			delay(150);
 			tone(buzzPin, 494, 100);
