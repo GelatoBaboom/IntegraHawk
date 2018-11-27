@@ -39,7 +39,7 @@ void loop() {
 	}
 
 	//Led Blink 
-	if (((micros() - timer) / 1000) > (led ? 250 : 50))
+	if (((micros() - timer) / 1000) > (led ? 750 : 250))
 	{
 		led = !led;
 		digitalWrite(13, led);
@@ -47,7 +47,7 @@ void loop() {
 	}
 
 	int actPositionx = map(valueX, 0, 1023, 126, -126);
-	int actPositionycorr = map(valueYCorr, 0, 1023, -200, 200);
+	int actPositionycorr = fabs(map(valueYCorr, 0, 1023, -200, 200));
 	adjustToneAlert(actPositionycorr);
 
 	//Position y and correction
@@ -63,26 +63,33 @@ void loop() {
 	delay(10);
 
 }
-
+bool warned = false;
 void adjustToneAlert(int poscorr)
 {
-	int dif = (posCorrCurrent - poscorr);
-	int diffp = (dif < 0 ? -(dif) : dif);
-	if (diffp > 5) {
-
-		int p = (poscorr < 0 ? -(poscorr) : poscorr);
-		if (p<5 && p>-5) {
-			tone(buzzPin, 440, 100);
+	//Serial.println(String(poscorr));
+	int dif = fabs(poscorr - posCorrCurrent);
+	//Serial.println(String(dif));
+	if (dif > 10 || poscorr < 5) {
+		if (poscorr < 5 && !warned) {
+			tone(buzzPin, 494, 100);
 			delay(150);
 			tone(buzzPin, 494, 100);
 			delay(150);
-			tone(buzzPin, 440, 100);
+			tone(buzzPin, 494, 100);
+			delay(150);
+			tone(buzzPin, 494, 100);
+			warned = true;
+			posCorrCurrent = poscorr;
 		}
 		else
 		{
-			tone(buzzPin, (p * 10) + 100, 80);
+			if (dif > 10) {
+				tone(buzzPin, (poscorr * 10) + 100, 80);
+				warned = false;
+				posCorrCurrent = poscorr;
+			}
 		}
-		posCorrCurrent = poscorr;
+		
 	}
 }
 
