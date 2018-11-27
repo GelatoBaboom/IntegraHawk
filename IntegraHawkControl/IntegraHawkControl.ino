@@ -47,7 +47,7 @@ void loop() {
 	}
 
 	int actPositionx = map(valueX, 0, 1023, 126, -126);
-	int actPositionycorr = fabs(map(valueYCorr, 0, 1023, -200, 200));
+	int actPositionycorr = map(valueYCorr, 0, 1023, -200, 200);
 	adjustToneAlert(actPositionycorr);
 
 	//Position y and correction
@@ -66,6 +66,7 @@ void loop() {
 bool warned = false;
 void adjustToneAlert(int poscorr)
 {
+	poscorr = fabs(poscorr);
 	//Serial.println(String(poscorr));
 	int dif = fabs(poscorr - posCorrCurrent);
 	//Serial.println(String(dif));
