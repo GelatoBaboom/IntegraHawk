@@ -46,7 +46,7 @@ void loop() {
 		timer = micros();
 	}
 
-	int actPositionx = map(valueX, 0, 1023, 126, -126);
+	int actPositionx = map(valueX, 0, 1023, 1, 254);
 	int actPositionycorr = map(valueYCorr, 0, 1023, -200, 200);
 	adjustToneAlert(actPositionycorr);
 
@@ -54,10 +54,10 @@ void loop() {
 	int actPositionyAndCorrection = valueY + actPositionycorr;
 	actPositionyAndCorrection = actPositionyAndCorrection < 0 ? 0 : actPositionyAndCorrection;
 	actPositionyAndCorrection = actPositionyAndCorrection > 1023 ? 1023 : actPositionyAndCorrection;
-	int actPositiony = map(actPositionyAndCorrection, 0, 1023, -126, 126);
+	int actPositiony = map(actPositionyAndCorrection, 0, 1023, 1, 254);
 	//Pos ESC
-	int actPositionESC = map(valueESC, 0, 1023, 126, -126);
-	byte buffer[6] = { (char)-127,(char)actPositionx, (char)actPositiony,(char)actPositionESC,autopilotstate == HIGH ? (char)-126 : (char)126,(char)127 };
+	int actPositionESC = map(valueESC, 0, 1023, 254, 1);
+	byte buffer[6] = { (char)0,(char)actPositionx, (char)actPositiony,(char)actPositionESC,autopilotstate == HIGH ? (char)1 : (char)254,(char)255 };
 
 	antSerial.write(buffer, 6);
 	delay(10);
